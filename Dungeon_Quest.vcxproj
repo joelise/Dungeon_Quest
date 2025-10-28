@@ -132,7 +132,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameCharacter.cpp" />
+    <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="JMC_SDLStarter.cpp" />
+    <ClCompile Include="Pickup.cpp" />
+    <ClCompile Include="Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameCharacter.h" />
+    <ClInclude Include="Goblin.h" />
+    <ClInclude Include="Pickup.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
