@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DungeonGame.cpp" />
     <ClCompile Include="GameCharacter.cpp" />
     <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="JMC_SDLStarter.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DungeonGame.h" />
     <ClInclude Include="GameCharacter.h" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="Pickup.h" />
