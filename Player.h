@@ -3,6 +3,7 @@
 class Player :
     public GameCharacter
 {
-    void PlayerMovement();
+public:
+    void PlayerMovement(enum Direction*);
 };
 

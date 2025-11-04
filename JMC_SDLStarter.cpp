@@ -13,15 +13,11 @@ const int GridSizeX = 10;
 const int GridSizeY = 10;
 const float TileSize = resY / GridSizeX;
 
-// The hero image
-static const char* heroPath = "Textures/Hero_no_sword.png";
-// Hero texture
-static SDL_Texture* heroTexture;
 // Global tile sizes
 static const int TileWidth = resX / 10;
 static const int TileHeight = resY / 10;
 // Hero rect
-static SDL_FRect heroRect{ 0, 0, TileWidth, TileHeight };
+//static SDL_FRect heroRect{ 0, 0, TileWidth, TileHeight };
 
  /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
@@ -32,12 +28,7 @@ static const char* ProjectName = "JMC Starter Project";
 
 static DungeonGame* Game;
 
-void LoadTextures()
-{
-    SDL_Surface* surf = IMG_Load(heroPath);
-    heroTexture = SDL_CreateTextureFromSurface(renderer, surf);
-    SDL_SetTextureScaleMode(heroTexture, SDL_SCALEMODE_NEAREST);
-}
+
 
 
 /* This function runs once at startup. */
@@ -72,19 +63,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            heroRect.y -= TileHeight;
+            //heroRect.y -= TileHeight;
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            heroRect.y += TileHeight;
+            //heroRect.y += TileHeight;
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            heroRect.x -= TileWidth;
+            //heroRect.x -= TileWidth;
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            heroRect.x += TileWidth;
+            //heroRect.x += TileWidth;
         }
 
     }
@@ -107,7 +98,19 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
     // Your Update code goes here.
-    SDL_RenderTexture(renderer, heroTexture, NULL, &heroRect);
+   
+
+    // Draw the tiles/grid
+    for (int x = 0; x < GridSizeX; x++)
+    {
+        for (int y = 0; y < GridSizeY; y++)
+        {
+            SDL_RenderTexture(renderer, Game->Tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
+        }
+    }
+
+    // Render the hero
+    SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
 
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 

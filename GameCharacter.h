@@ -18,6 +18,6 @@ public:
 
 private:
 	bool isAlive = true;
-	SDL_FRect rect;
+	//SDL_FRect rect;
 };
 

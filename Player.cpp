@@ -1,6 +1,6 @@
 #include "Player.h"
 
-void Player::PlayerMovement()
+void Player::PlayerMovement(enum Direction*)
 {
 	
 }
