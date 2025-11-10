@@ -6,6 +6,8 @@ DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 {
 	this->tileSizeX = tileSizeX;
 	this->tileSizeY = tileSizeY;
+
+	
 }
 
 DungeonGame::~DungeonGame()
@@ -25,6 +27,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero->Rect.h = tileSizeY;
 	
 }
+
 
 void DungeonGame::LoadRoom(const char* file)
 {
@@ -47,3 +50,13 @@ void DungeonGame::LoadRoom(const char* file)
 		}
 	}
 }
+
+void DungeonGame::PlayerInput(const SDL_Event& e)
+{
+	if (e.type == SDL_EVENT_KEY_DOWN)
+	{
+		
+	}
+}
+
+
