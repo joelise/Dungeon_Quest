@@ -4,6 +4,8 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include "DungeonGame.h"
+#include "Player.h"
+#include "Enums.h"
 
 using namespace std;
 
@@ -27,6 +29,8 @@ static SDL_Texture* texture = NULL;
 static const char* ProjectName = "JMC Starter Project";
 
 static DungeonGame* Game;
+static Player* player;
+static Direction* dir;
 
 
 
@@ -63,6 +67,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
+            
             //heroRect.y -= TileHeight;
         }
         if (event->key.scancode == SDL_SCANCODE_S)

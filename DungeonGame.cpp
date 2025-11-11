@@ -51,12 +51,7 @@ void DungeonGame::LoadRoom(const char* file)
 	}
 }
 
-void DungeonGame::PlayerInput(const SDL_Event& e)
-{
-	if (e.type == SDL_EVENT_KEY_DOWN)
-	{
-		
-	}
-}
+
+
 
 

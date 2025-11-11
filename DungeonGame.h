@@ -5,9 +5,10 @@
 #include "GameCharacter.h"
 #include "Player.h"
 #include "Tile.h"
+#include "Enums.h"
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
-enum Direction { North, East, South, West };
+
 const static int RoomSize = 10;
 
 class DungeonGame
@@ -17,7 +18,7 @@ public:
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
 	void LoadRoom(const char* file);
-	void PlayerInput(const SDL_Event& e);
+	//void PlayerInput();
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
 private:
