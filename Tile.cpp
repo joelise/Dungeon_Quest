@@ -7,5 +7,7 @@ bool Tile::CompareColours(SDL_Color& col1, SDL_Color& col2)
 
 void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture* textures[])
 {
-
+	SDL_Color white = { 255, 255, 255, 255 };
+	Rect = { x, y, size, size };
+	
 }
