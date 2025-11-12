@@ -18,7 +18,7 @@ public:
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
 	void LoadRoom(const char* file);
-	//void PlayerInput();
+	void PlayerMovement(Direction dir, int tile);
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
 private:

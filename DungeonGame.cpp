@@ -51,6 +51,17 @@ void DungeonGame::LoadRoom(const char* file)
 	}
 }
 
+void DungeonGame::PlayerMovement(Direction dir, int tile)
+{
+	switch (dir)
+	{
+	case North: this->Hero->Rect.y -= tile; break;
+	case East: this->Hero->Rect.x += tile; break;
+	case South: this->Hero->Rect.y += tile; break;
+	case West: this->Hero->Rect.x -= tile; break;
+	}
+}
+
 
 
 
