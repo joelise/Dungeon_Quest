@@ -8,8 +8,10 @@
 #include "Enums.h"
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
-const static std::string path_Carpet[]{ "Tile_carpet_base.bmp" };
-//const char* tileFile;
+const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp" };
+//const char* rooms{ "Data/Rooms/Room01.bmp" };
+
+//const char* CarpetTiles[]{ "Textures/Tile_carpet_base.bmp" };
 
 const static int RoomSize = 10;
 
@@ -24,7 +26,10 @@ public:
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
 	void Update(double);
-	SDL_Texture* carpets;
+	//SDL_Texture* carpets[3];
+	Tile* tile;
+	//SDL_Surface* RoomSurf;
+	
 private:
 	float tileSizeX;
 	float tileSizeY;

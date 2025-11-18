@@ -17,7 +17,7 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture
 	else
 	{
 		Walkable = true;
-		this->texture = textures[1];
+		this->texture = textures[0];
 	}
 
 	SDL_FRect rect{ Rect.x = x * size, Rect.y = y * size, Rect.w = size, Rect.h = size };

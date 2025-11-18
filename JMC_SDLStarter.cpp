@@ -31,6 +31,7 @@ static const char* ProjectName = "JMC Starter Project";
 static DungeonGame* Game;
 static Player* player;
 static Direction* dir;
+static Tile* tile;
 
 static Uint64 now;
 static Uint64 last;
@@ -114,17 +115,20 @@ SDL_AppResult SDL_AppIterate(void* appstate)
    
 
     // Draw the tiles/grid
+    
     for (int x = 0; x < GridSizeX; x++)
     {
         for (int y = 0; y < GridSizeY; y++)
         {
-            SDL_RenderTexture(renderer, Game->Tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
+            
+            //SDL_RenderTexture(renderer, Game->tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
         }
     }
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
-
+   // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
+    //Game->LoadRoom(Game.room)
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */

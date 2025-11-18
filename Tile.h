@@ -10,5 +10,9 @@ public:
 	SDL_Texture* texture;
 	SDL_FRect Rect;
 	void Configure(SDL_Color& color, float x, float y, float size, SDL_Texture* textures[]);
+	Tile* NorthNeighbour;
+	Tile* EastNeightbour;
+	Tile* SouthNeighbour;
+	Tile* WestNeighbour;
 };
 
