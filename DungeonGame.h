@@ -8,6 +8,8 @@
 #include "Enums.h"
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
+const static std::string path_Carpet[]{ "Tile_carpet_base.bmp" };
+//const char* tileFile;
 
 const static int RoomSize = 10;
 
@@ -21,6 +23,8 @@ public:
 	void PlayerMovement(Direction dir, int tile);
 	Player* Hero;
 	Tile Tiles[RoomSize][RoomSize];
+	void Update(double);
+	SDL_Texture* carpets;
 private:
 	float tileSizeX;
 	float tileSizeY;

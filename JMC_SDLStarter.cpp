@@ -32,6 +32,9 @@ static DungeonGame* Game;
 static Player* player;
 static Direction* dir;
 
+static Uint64 now;
+static Uint64 last;
+
 
 
 
@@ -98,7 +101,10 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     Think of this like Unity's Update() loop */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-
+    last = now;
+    now = SDL_GetPerformanceCounter();
+    double deltaTime = (double)((now - last) / (double)SDL_GetPerformanceFrequency());
+    Game->Update(deltaTime);
 
     /* as you can see from this, rendering draws over whatever was drawn before it. */
     SDL_SetRenderDrawColor(renderer, 33, 33, 33, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */

@@ -44,6 +44,9 @@ void DungeonGame::LoadRoom(const char* file)
 			Uint8* pixel = static_cast<Uint8*>(surface->pixels) + y + surface->pitch + x * bpp;
 			SDL_GetRGB(*reinterpret_cast<Uint32*>(pixel), pixelDetails, NULL, &col.r, &col.g, &col.b);
 
+			carpets = path_Carpet->c_str();
+
+			this->Tiles[x][y].Configure(col, x, y, tileSizeX, )
 			// Col now contains pixel colour at position x,y
 			// Now configure the tile at x, y with col
 			//this->Tiles[x][y].Configure(col, x, y, tileSizeX, tileSizeY)
@@ -60,6 +63,10 @@ void DungeonGame::PlayerMovement(Direction dir, int tile)
 	case South: this->Hero->Rect.y += tile; break;
 	case West: this->Hero->Rect.x -= tile; break;
 	}
+}
+
+void DungeonGame::Update(double)
+{
 }
 
 
