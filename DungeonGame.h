@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "Tile.h"
 #include "Enums.h"
+#include "MoveResult.h"
+
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
 const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textures/Tile_carpet_blood_1.bmp", "Textures/Tile_carpet_bones"};
@@ -27,8 +29,12 @@ public:
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
 	void LoadRoom(const char* file);
-	void PlayerMovement(Direction dir, int tile);
+	//void PlayerMovement(Direction dir, int tile);
+	void PlayerMove(Direction);
 	Player* Hero;
+	int spawnPosX = 5;
+	int spawnPosY = 5;
+
 	
 	void Update(double);
 	SDL_Texture* Carpets[TextureAmount];

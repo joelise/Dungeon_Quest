@@ -55,7 +55,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
     Game = new DungeonGame(TileSize, TileSize);
     Game->LoadTextures(renderer);
-
+    
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -71,22 +71,23 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            Game->PlayerMovement(North, TileSize);
+            //Game->PlayerMovement(North, TileSize);
+            Game->PlayerMove(North);
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            Game->PlayerMovement(South, TileSize);
-           
+            //Game->PlayerMovement(South, TileSize);
+            Game->PlayerMove(South);
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            Game->PlayerMovement(West, TileSize);
-           
+            //Game->PlayerMovement(West, TileSize);
+            Game->PlayerMove(West);
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            Game->PlayerMovement(East, TileSize);
-            
+            //Game->PlayerMovement(East, TileSize);
+            Game->PlayerMove(East);
         }
 
     }
@@ -112,7 +113,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
     // Your Update code goes here.
-    Game->LoadRoom(Room);
+    
    
 
     // Draw the tiles/grid
@@ -130,6 +131,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
+    Game->LoadRoom(Room);
    // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
     //
     SDL_RenderPresent(renderer);  /* put it all on the screen! */

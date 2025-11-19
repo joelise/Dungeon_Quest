@@ -6,7 +6,6 @@ DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 {
 	this->tileSizeX = tileSizeX;
 	this->tileSizeY = tileSizeY;
-
 	
 }
 
@@ -20,12 +19,14 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero = new Player;
 	this->Hero->Texture = IMG_LoadTexture(renderer, path_Hero.c_str());
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
-
-	this->Hero->Rect.x = 0;
-	this->Hero->Rect.y = 0;
+	
+	this->Hero->Rect.x = 5;
+	this->Hero->Rect.y = 5;
+	
 	this->Hero->Rect.w = tileSizeX;
 	this->Hero->Rect.h = tileSizeY;
 
+	
 	//this->carpets = IMG_LoadTexture(renderer, path_Carpet->c_str());
 	this->tile = new Tile;
 	this->tile->texture = IMG_LoadTexture(renderer, path_Carpet->c_str());
@@ -50,6 +51,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 		Carpets[i] = SDL_CreateTextureFromSurface(renderer, CarpetSurf);
 		SDL_DestroySurface(CarpetSurf);
 	}
+	
 	
 	
 }
@@ -81,11 +83,20 @@ void DungeonGame::LoadRoom(const char* file)
 			// Col now contains pixel colour at position x,y
 			// Now configure the tile at x, y with col
 			//this->Tiles[x][y].Configure(col, x, y, tileSizeX, tileSizeY)
+			//this->Hero->Rect.x = spawnPosX;
+			//this->Hero->Rect.y = spawnPosY;
 		}
 	}
 }
 
-void DungeonGame::PlayerMovement(Direction dir, int tile)
+void DungeonGame::PlayerMove(Direction dir)
+{
+	Hero->MovePlayer(dir, this->Hero, tileSizeX);
+	
+	
+}
+
+/*void DungeonGame::PlayerMovement(Direction dir, int tile)
 {
 	switch (dir)
 	{
@@ -94,10 +105,11 @@ void DungeonGame::PlayerMovement(Direction dir, int tile)
 	case South: this->Hero->Rect.y += tile; break;
 	case West: this->Hero->Rect.x -= tile; break;
 	}
-}
+}*/
 
 void DungeonGame::Update(double)
 {
+	
 }
 
 
