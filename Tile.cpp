@@ -20,8 +20,12 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture
 		this->texture = textures[0];
 	}
 
-	SDL_FRect rect{ Rect.x = x * size, Rect.y = y * size, Rect.w = size, Rect.h = size };
+	Rect.x = x;
+	Rect.y = y;
+	Rect.w = size;
+	Rect.h = size;
+	//SDL_FRect rect{ Rect.x = x * size, Rect.y = y * size, Rect.w = size, Rect.h = size };
 	
 
-	this->Rect = rect;
+	//this->Rect = rect;
 }

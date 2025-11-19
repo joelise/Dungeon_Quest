@@ -14,5 +14,6 @@ public:
 	Tile* EastNeightbour;
 	Tile* SouthNeighbour;
 	Tile* WestNeighbour;
+	
 };
 

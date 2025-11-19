@@ -34,10 +34,23 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->tile->Rect.w = tileSizeX;
 	this->tile->Rect.h = tileSizeY;
 
+	//int textureLength = 0;
 	
-	//this->Tiles[RoomSize][RoomSize] = new Tile;
-	//this->Tiles[RoomSize][RoomSize].texture = IMG_LoadTexture(renderer, path_Carpet->c_str());
+	//Tiles[0][0] = new Tile;
+	//SDL_Texture* CarpetTexture
+	//this->Tiles[9][9].texture = IMG_LoadTexture(renderer, path_Carpet->c_str());
+	//this->Tiles[9][9].Rect.x = 0;
+	//this->Tiles[9][9].Rect.y = 0;
+	//this->Tiles[9][9].Rect.w = tileSizeX;
+	//this->Tiles[9][9].Rect.h = tileSizeY;
 
+	for (int i = 0; i < TextureAmount; i++)
+	{
+		CarpetSurf = SDL_LoadBMP(path_Carpet[i].c_str());
+		Carpets[i] = SDL_CreateTextureFromSurface(renderer, CarpetSurf);
+		SDL_DestroySurface(CarpetSurf);
+	}
+	
 	
 }
 
@@ -47,23 +60,24 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 void DungeonGame::LoadRoom(const char* file)
 {
 	SDL_Surface* surface = SDL_LoadBMP(file);
-	//RoomSurf = SDL_LoadBMP(rooms);
+	
 	const SDL_PixelFormatDetails* pixelDetails = SDL_GetPixelFormatDetails(surface->format);
 	const Uint8 bpp = SDL_BYTESPERPIXEL(surface->format);
 	SDL_Color col;
 	
-	SDL_Texture* carpet[] = { tile->texture };
+	//SDL_Texture* carpet[] = Carpets[TextureAmount];
 	
 	for (int y = 0; y < surface->h; y++) 
 	{
 		for (int x = 0; x < surface->w; x++) 
 		{
-			Uint8* pixel = static_cast<Uint8*>(surface->pixels) + y + surface->pitch + x * bpp;
+			Uint8* pixel = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
 			SDL_GetRGB(*reinterpret_cast<Uint32*>(pixel), pixelDetails, NULL, &col.r, &col.g, &col.b);
-
 			
-
-			this->Tiles[x][y].Configure(col, tile->Rect.x, tile->Rect.y, tileSizeX, carpet);
+			
+			this->Tiles[x][y].Configure(col, x * tileSizeX, y * tileSizeY, tileSizeX, Carpets);
+			SDL_DestroySurface(surface);
+			//this->Tiles[x][y].Configure(col, tile->Rect.x, tile->Rect.y, tileSizeX, carpet);
 			// Col now contains pixel colour at position x,y
 			// Now configure the tile at x, y with col
 			//this->Tiles[x][y].Configure(col, x, y, tileSizeX, tileSizeY)
@@ -85,6 +99,8 @@ void DungeonGame::PlayerMovement(Direction dir, int tile)
 void DungeonGame::Update(double)
 {
 }
+
+
 
 
 

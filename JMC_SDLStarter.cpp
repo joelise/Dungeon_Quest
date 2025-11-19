@@ -27,7 +27,7 @@ static SDL_Renderer* renderer = NULL;
 static SDL_Texture* texture = NULL;
 
 static const char* ProjectName = "JMC Starter Project";
-
+const static char* Room = { "Data/Rooms/Room01.bmp" };
 static DungeonGame* Game;
 static Player* player;
 static Direction* dir;
@@ -71,21 +71,21 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            Game->PlayerMovement(North, TileHeight);
+            Game->PlayerMovement(North, TileSize);
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            Game->PlayerMovement(South, TileWidth);
+            Game->PlayerMovement(South, TileSize);
            
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            Game->PlayerMovement(West, TileWidth);
+            Game->PlayerMovement(West, TileSize);
            
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            Game->PlayerMovement(East, TileHeight);
+            Game->PlayerMovement(East, TileSize);
             
         }
 
@@ -112,6 +112,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderClear(renderer);  /* start with a blank canvas. */
 
     // Your Update code goes here.
+    Game->LoadRoom(Room);
    
 
     // Draw the tiles/grid
@@ -121,14 +122,16 @@ SDL_AppResult SDL_AppIterate(void* appstate)
         for (int y = 0; y < GridSizeY; y++)
         {
             
-            //SDL_RenderTexture(renderer, Game->tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
+            SDL_RenderTexture(renderer, Game->Tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
+            //SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
+            //SDL_RenderTexture(renderer, Game->Tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
         }
     }
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
    // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
-    //Game->LoadRoom(Game.room)
+    //
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */

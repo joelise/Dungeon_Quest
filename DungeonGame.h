@@ -8,8 +8,13 @@
 #include "Enums.h"
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
-const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp" };
-//const char* rooms{ "Data/Rooms/Room01.bmp" };
+const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textures/Tile_carpet_blood_1.bmp", "Textures/Tile_carpet_bones"};
+
+const int TextureAmount = sizeof(path_Carpet) / sizeof(path_Carpet[0]);
+
+//const static std::string room_Path = "Data / Rooms / Room01.bmp";
+
+//const char* Room[] = { "Data/Rooms/Room01.bmp" };
 
 //const char* CarpetTiles[]{ "Textures/Tile_carpet_base.bmp" };
 
@@ -24,11 +29,16 @@ public:
 	void LoadRoom(const char* file);
 	void PlayerMovement(Direction dir, int tile);
 	Player* Hero;
-	Tile Tiles[RoomSize][RoomSize];
+	
 	void Update(double);
-	//SDL_Texture* carpets[3];
+	SDL_Texture* Carpets[TextureAmount];
+	SDL_Surface* CarpetSurf;
+	Tile Tiles[RoomSize][RoomSize];
+
+	
 	Tile* tile;
 	//SDL_Surface* RoomSurf;
+	//Tile* GetNeighbour(int currentX, int currentY, Direction dir);
 	
 private:
 	float tileSizeX;
