@@ -54,6 +54,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
     Game = new DungeonGame(TileSize, TileSize);
+    
     Game->LoadTextures(renderer);
     
     return SDL_APP_CONTINUE;  /* carry on with the program! */

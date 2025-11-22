@@ -1,9 +1,11 @@
 #pragma once
 #include "Pickup.h"
 #include <SDL3_image/SDL_image.h>
+#include "Tile.h"
 //#include "DungeonGame.h"
 class GameCharacter
 {
+
 public:
 	GameCharacter();	// Constructer, called when created
 	~GameCharacter();	// Destructer, called when destroyed

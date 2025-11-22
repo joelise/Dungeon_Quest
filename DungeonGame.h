@@ -30,8 +30,11 @@ public:
 	void LoadTextures(SDL_Renderer* renderer);
 	void LoadRoom(const char* file);
 	//void PlayerMovement(Direction dir, int tile);
-	void PlayerMove(Direction);
+	//void PlayerMove(Direction);
+	void PlayerMove(Direction dir);
 	Player* Hero;
+	int PlayerPosX;
+	int PlayerPosY;
 	int spawnPosX = 5;
 	int spawnPosY = 5;
 

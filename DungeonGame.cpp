@@ -7,6 +7,7 @@ DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 	this->tileSizeX = tileSizeX;
 	this->tileSizeY = tileSizeY;
 	
+	
 }
 
 DungeonGame::~DungeonGame()
@@ -19,12 +20,12 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero = new Player;
 	this->Hero->Texture = IMG_LoadTexture(renderer, path_Hero.c_str());
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
+	this->Hero->GetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
+	//this->Hero->Rect.x = 5;
+	//this->Hero->Rect.y = 5;
 	
-	this->Hero->Rect.x = 5;
-	this->Hero->Rect.y = 5;
-	
-	this->Hero->Rect.w = tileSizeX;
-	this->Hero->Rect.h = tileSizeY;
+	//this->Hero->Rect.w = tileSizeX;
+	//this->Hero->Rect.h = tileSizeY;
 
 	
 	//this->carpets = IMG_LoadTexture(renderer, path_Carpet->c_str());
@@ -49,6 +50,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	{
 		CarpetSurf = SDL_LoadBMP(path_Carpet[i].c_str());
 		Carpets[i] = SDL_CreateTextureFromSurface(renderer, CarpetSurf);
+		SDL_SetTextureScaleMode(Carpets[i], SDL_SCALEMODE_NEAREST);
 		SDL_DestroySurface(CarpetSurf);
 	}
 	
@@ -91,10 +93,35 @@ void DungeonGame::LoadRoom(const char* file)
 
 void DungeonGame::PlayerMove(Direction dir)
 {
+	int dirX = 0;
+	int dirY = 0;
+
+	switch (dir)
+	{
+	case North: dirY = -1; break;
+	case East: dirX = 1; break;
+	case South: dirY = 1; break;
+	case West: dirX = -1; break;
+	}
+
+	int newX = this->Hero->PosX + dirX;
+	int newY = this->Hero->PosY + dirY;
+
+	if (!Tiles[newX][newY].Walkable)
+	{
+		return;
+	}
+
+	this->Hero->GetCurrentPos(newX, newY, tileSizeX);
+}
+
+/*void DungeonGame::PlayerMove(Direction dir)
+{
+	//Hero->GetCurrentPos(Hero, PlayerPosX, PlayerPosY, tileSizeX);
 	Hero->MovePlayer(dir, this->Hero, tileSizeX);
 	
 	
-}
+}*/
 
 /*void DungeonGame::PlayerMovement(Direction dir, int tile)
 {
