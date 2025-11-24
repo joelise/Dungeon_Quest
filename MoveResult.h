@@ -12,6 +12,7 @@ public:
 	Tile* GetTile();
 	void SetAction(MoveResultAction a);
 	MoveResultAction GetAction();
+	void TryMove(int currentX, int currentY, Direction dir);
 
 
 private:

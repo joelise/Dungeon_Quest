@@ -29,12 +29,12 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 
 	
 	//this->carpets = IMG_LoadTexture(renderer, path_Carpet->c_str());
-	this->tile = new Tile;
-	this->tile->texture = IMG_LoadTexture(renderer, path_Carpet->c_str());
-	this->tile->Rect.x = 0;
-	this->tile->Rect.y = 0;
-	this->tile->Rect.w = tileSizeX;
-	this->tile->Rect.h = tileSizeY;
+	//this->tile = new Tile;
+	//this->tile->texture = IMG_LoadTexture(renderer, path_Carpet->c_str());
+	//this->tile->Rect.x = 0;
+	//this->tile->Rect.y = 0;
+	//this->tile->Rect.w = tileSizeX;
+	//this->tile->Rect.h = tileSizeY;
 
 	//int textureLength = 0;
 	
@@ -58,8 +58,60 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	
 }
 
+Tile* DungeonGame::GetNeighbour(int currentX, int currentY, Direction dir)
+{
+	switch (dir)
+	{
+	case North:
+		if (currentY == 0) return nullptr;
+		return &Tiles[currentX][currentY - 1];
 
+	case East:
+		if (currentX == RoomSize - 1) return nullptr;
+		return &Tiles[currentX + 1][currentY];
 
+	case South:
+		if (currentY == RoomSize - 1) return nullptr;
+		return &Tiles[currentX][currentY + 1];
+
+	case West:
+		if (currentX == 0) return nullptr;
+		return &Tiles[currentX - 1][currentY];
+
+	}
+}
+
+void DungeonGame::SetNeighbour()
+{
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			Tile& tile = Tiles[x][y];
+			tile.NorthNeighbour = GetNeighbour(x, y, Direction::North);
+			tile.EastNeightbour = GetNeighbour(x, y, Direction::East);
+			tile.SouthNeighbour = GetNeighbour(x, y, Direction::South);
+			tile.WestNeighbour = GetNeighbour(x, y, Direction::West);
+		}
+	}
+
+}
+
+void DungeonGame::test()
+{
+	
+	int posx = this->Hero->PosX;
+	int posy = this->Hero->PosY;
+	int nposx;
+	int nposy;
+	
+	std::cout << posx << posy << std::endl;
+	Tile& tile = Tiles[posx][posy];
+	tile.NorthNeighbour = GetNeighbour(posx, posy, North);
+	std::cout << tile.NorthNeighbour << std::endl;
+
+	
+}
 
 void DungeonGame::LoadRoom(const char* file)
 {
@@ -81,6 +133,8 @@ void DungeonGame::LoadRoom(const char* file)
 			
 			this->Tiles[x][y].Configure(col, x * tileSizeX, y * tileSizeY, tileSizeX, Carpets);
 			SDL_DestroySurface(surface);
+			//SetNeighbour();
+
 			//this->Tiles[x][y].Configure(col, tile->Rect.x, tile->Rect.y, tileSizeX, carpet);
 			// Col now contains pixel colour at position x,y
 			// Now configure the tile at x, y with col
@@ -138,6 +192,9 @@ void DungeonGame::Update(double)
 {
 	
 }
+
+
+
 
 
 

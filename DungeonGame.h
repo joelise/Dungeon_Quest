@@ -7,6 +7,7 @@
 #include "Tile.h"
 #include "Enums.h"
 #include "MoveResult.h"
+#include <iostream>
 
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
@@ -47,7 +48,9 @@ public:
 	
 	Tile* tile;
 	//SDL_Surface* RoomSurf;
-	//Tile* GetNeighbour(int currentX, int currentY, Direction dir);
+	Tile* GetNeighbour(int currentX, int currentY, Direction dir);
+	void SetNeighbour();
+	void test();
 	
 private:
 	float tileSizeX;
