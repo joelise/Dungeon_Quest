@@ -20,7 +20,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero = new Player;
 	this->Hero->Texture = IMG_LoadTexture(renderer, path_Hero.c_str());
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
-	this->Hero->GetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
+	this->Hero->SetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
 	//this->Hero->Rect.x = 5;
 	//this->Hero->Rect.y = 5;
 	
@@ -58,6 +58,22 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	
 }
 
+int DungeonGame::RandomNum()
+{
+	return rand() % RoomTypes;
+}
+
+void DungeonGame::RandomizeDungeon()
+{
+	for (int x = 0; x < NumRoomsX; x++)
+	{
+		for (int y = 0; y < NumRoomsY; y++)
+		{
+			DungeonLayout[x][y] = RandomNum();
+		}
+	}
+}
+
 Tile* DungeonGame::GetNeighbour(int currentX, int currentY, Direction dir)
 {
 	switch (dir)
@@ -88,30 +104,21 @@ void DungeonGame::SetNeighbour()
 		for (int y = 0; y < RoomSize; y++)
 		{
 			Tile& tile = Tiles[x][y];
-			tile.NorthNeighbour = GetNeighbour(x, y, Direction::North);
-			tile.EastNeightbour = GetNeighbour(x, y, Direction::East);
-			tile.SouthNeighbour = GetNeighbour(x, y, Direction::South);
-			tile.WestNeighbour = GetNeighbour(x, y, Direction::West);
+			
+			// North
+			(y == 0) ? tile.NorthNeighbour = nullptr : tile.NorthNeighbour = &Tiles[x][y - 1];
+			
+			// East
+			(x == RoomSize - 1) ? tile.EastNeightbour = nullptr : tile.EastNeightbour = &Tiles[x + 1][y];
+
+			// South
+			//(y == RoomSize)
 		}
 	}
 
 }
 
-void DungeonGame::test()
-{
-	
-	int posx = this->Hero->PosX;
-	int posy = this->Hero->PosY;
-	int nposx;
-	int nposy;
-	
-	std::cout << posx << posy << std::endl;
-	Tile& tile = Tiles[posx][posy];
-	tile.NorthNeighbour = GetNeighbour(posx, posy, North);
-	std::cout << tile.NorthNeighbour << std::endl;
 
-	
-}
 
 void DungeonGame::LoadRoom(const char* file)
 {
@@ -132,6 +139,8 @@ void DungeonGame::LoadRoom(const char* file)
 			
 			
 			this->Tiles[x][y].Configure(col, x * tileSizeX, y * tileSizeY, tileSizeX, Carpets);
+			this->Tiles[x][y].X = x;
+			this->Tiles[x][y].Y = y;
 			SDL_DestroySurface(surface);
 			//SetNeighbour();
 
@@ -143,6 +152,14 @@ void DungeonGame::LoadRoom(const char* file)
 			//this->Hero->Rect.y = spawnPosY;
 		}
 	}
+}
+
+void DungeonGame::LoadRoom(int x, int y)
+{
+	int index = DungeonLayout[x][y];
+	const char* fileName = RoomFiles[index];
+
+	LoadRoom(fileName);
 }
 
 void DungeonGame::PlayerMove(Direction dir)
@@ -166,7 +183,7 @@ void DungeonGame::PlayerMove(Direction dir)
 		return;
 	}
 
-	this->Hero->GetCurrentPos(newX, newY, tileSizeX);
+	this->Hero->SetCurrentPos(newX, newY, tileSizeX);
 }
 
 /*void DungeonGame::PlayerMove(Direction dir)
@@ -191,6 +208,23 @@ void DungeonGame::PlayerMove(Direction dir)
 void DungeonGame::Update(double)
 {
 	
+}
+
+void DungeonGame::test()
+{
+
+	int posx = this->Hero->PosX;
+	int posy = this->Hero->PosY;
+	int nposx;
+	int nposy;
+
+	std::cout << posx << posy << std::endl;
+	Tile& tile = Tiles[posx][posy];
+	//tile.NorthNeighbour = GetNeighbour(posx, posy, North);
+	//std::cout << tile.NorthNeighbour << std::endl;
+	//std::cout << tile.NorthNeighbour->X << ", " << tile.NorthNeighbour->Y << std::endl;
+	std::cout << tile.EastNeightbour->X << ", " << tile.EastNeightbour->Y << std::endl;
+
 }
 
 

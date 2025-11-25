@@ -15,7 +15,7 @@
 	
 }*/
 
-void Player::GetCurrentPos(float x, float y, float tileSize)
+void Player::SetCurrentPos(float x, float y, float tileSize)
 {
 	PosX = x;
 	PosY = y;

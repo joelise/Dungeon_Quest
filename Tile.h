@@ -6,6 +6,8 @@ class Tile
 	static bool CompareColours(SDL_Color& col1, SDL_Color& col2);
 
 public:
+	int X;
+	int Y;
 	bool Walkable;
 	SDL_Texture* texture;
 	SDL_FRect Rect;
@@ -14,6 +16,7 @@ public:
 	Tile* EastNeightbour;
 	Tile* SouthNeighbour;
 	Tile* WestNeighbour;
+	
 	
 };
 

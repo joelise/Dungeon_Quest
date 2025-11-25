@@ -15,6 +15,9 @@ const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textur
 
 const int TextureAmount = sizeof(path_Carpet) / sizeof(path_Carpet[0]);
 
+const static char* RoomFiles[]{ "Data/Rooms/Room01.bmp", "Data/Rooms/Room02.bmp", "Data/Rooms/Room03.bmp", "Data/Rooms/Room04.bmp", "Data/Rooms/Room05.bmp" };
+const int NumRoomsX = 10;
+const int NumRoomsY = 10;
 //const static std::string room_Path = "Data / Rooms / Room01.bmp";
 
 //const char* Room[] = { "Data/Rooms/Room01.bmp" };
@@ -29,7 +32,10 @@ public:
 	DungeonGame(float tileSizeX, float tileSizeY);
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
+	int RandomNum();
+	void RandomizeDungeon();
 	void LoadRoom(const char* file);
+	void LoadRoom(int x, int y);
 	//void PlayerMovement(Direction dir, int tile);
 	//void PlayerMove(Direction);
 	void PlayerMove(Direction dir);
@@ -39,6 +45,8 @@ public:
 	int spawnPosX = 5;
 	int spawnPosY = 5;
 
+	int DungeonLayout[NumRoomsX][NumRoomsY];
+	int RoomTypes = sizeof(RoomFiles) / sizeof(RoomFiles[0]);
 	
 	void Update(double);
 	SDL_Texture* Carpets[TextureAmount];
@@ -46,11 +54,12 @@ public:
 	Tile Tiles[RoomSize][RoomSize];
 
 	
-	Tile* tile;
+	Tile* tileRef;
 	//SDL_Surface* RoomSurf;
 	Tile* GetNeighbour(int currentX, int currentY, Direction dir);
 	void SetNeighbour();
 	void test();
+	MoveResult* MoveResult;
 	
 private:
 	float tileSizeX;
