@@ -27,7 +27,7 @@ static SDL_Renderer* renderer = NULL;
 static SDL_Texture* texture = NULL;
 
 static const char* ProjectName = "JMC Starter Project";
-const static char* Room = { "Data/Rooms/Room01.bmp" };
+const static char* Room = { "Data/Rooms/Room04.bmp" };
 static DungeonGame* Game;
 static Player* player;
 static Direction* dir;
@@ -55,9 +55,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
     Game = new DungeonGame(TileSize, TileSize);
     
+    if (Game == nullptr)
+    {
+        cout << "Null";
+    }
+    Game->RandomizeDungeon();
+    
+   Game->LoadRoom(TileSize, TileSize);
+   Game->SetNeighbour();
     Game->LoadTextures(renderer);
-    Game->LoadRoom(Room);
-    Game->SetNeighbour();
+   
+    
+    Game->SetPlayerPos();
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -137,8 +146,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
-    Game->LoadRoom(Room);
+   Game->LoadRoom(TileSize, TileSize);
     Game->SetNeighbour();
+    
    // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
     //
     SDL_RenderPresent(renderer);  /* put it all on the screen! */

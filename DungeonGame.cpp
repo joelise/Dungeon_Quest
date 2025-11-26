@@ -20,7 +20,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero = new Player;
 	this->Hero->Texture = IMG_LoadTexture(renderer, path_Hero.c_str());
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
-	this->Hero->SetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
+	//this->Hero->SetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
 	//this->Hero->Rect.x = 5;
 	//this->Hero->Rect.y = 5;
 	
@@ -54,6 +54,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 		SDL_DestroySurface(CarpetSurf);
 	}
 	
+
 	
 	
 }
@@ -72,6 +73,15 @@ void DungeonGame::RandomizeDungeon()
 			DungeonLayout[x][y] = RandomNum();
 		}
 	}
+
+	for (int x = 0; x < NumRoomsX; x++)
+	{
+		for (int y = 0; y < NumRoomsY; y++)
+		{
+			std::cout << DungeonLayout[x][y] << " ";
+		}
+	}
+
 }
 
 Tile* DungeonGame::GetNeighbour(int currentX, int currentY, Direction dir)
@@ -112,7 +122,10 @@ void DungeonGame::SetNeighbour()
 			(x == RoomSize - 1) ? tile.EastNeightbour = nullptr : tile.EastNeightbour = &Tiles[x + 1][y];
 
 			// South
-			//(y == RoomSize)
+			(y == RoomSize - 1) ? tile.SouthNeighbour = nullptr : tile.SouthNeighbour = &Tiles[x][y + 1];
+
+			// West
+			(x == 0) ? tile.WestNeighbour = nullptr : tile.WestNeighbour = &Tiles[x - 1][y];
 		}
 	}
 
@@ -120,9 +133,21 @@ void DungeonGame::SetNeighbour()
 
 
 
+
+
 void DungeonGame::LoadRoom(const char* file)
 {
+	//std::cout << "LoadRoom started for file:" << file << std::endl;
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			//std::cout << "Reseting tile x=" << x << "y=" << y << std::endl;
+			this->Tiles[x][y] = Tile();
+		}
+	}
 	SDL_Surface* surface = SDL_LoadBMP(file);
+	
 	
 	const SDL_PixelFormatDetails* pixelDetails = SDL_GetPixelFormatDetails(surface->format);
 	const Uint8 bpp = SDL_BYTESPERPIXEL(surface->format);
@@ -134,14 +159,21 @@ void DungeonGame::LoadRoom(const char* file)
 	{
 		for (int x = 0; x < surface->w; x++) 
 		{
+			//if (x >= RoomSize || y >= RoomSize)
+			//{
+				//std::cout << "skipping out of bounds tile x=" << x << "y=" << y << std::endl;
+				//continue;
+			//}
 			Uint8* pixel = static_cast<Uint8*>(surface->pixels) + y * surface->pitch + x * bpp;
 			SDL_GetRGB(*reinterpret_cast<Uint32*>(pixel), pixelDetails, NULL, &col.r, &col.g, &col.b);
 			
+			//std::cout << "configuring tile x=" << x << " y=" << y << " color=( " << (int)col.r << ", " << (int)col.g << ", " << (int)col.b << ")" << std::endl;
 			
 			this->Tiles[x][y].Configure(col, x * tileSizeX, y * tileSizeY, tileSizeX, Carpets);
-			this->Tiles[x][y].X = x;
-			this->Tiles[x][y].Y = y;
-			SDL_DestroySurface(surface);
+			//this->Tiles[x][y].X = x;
+			//this->Tiles[x][y].Y = y;
+
+			
 			//SetNeighbour();
 
 			//this->Tiles[x][y].Configure(col, tile->Rect.x, tile->Rect.y, tileSizeX, carpet);
@@ -152,6 +184,7 @@ void DungeonGame::LoadRoom(const char* file)
 			//this->Hero->Rect.y = spawnPosY;
 		}
 	}
+	SDL_DestroySurface(surface);
 }
 
 void DungeonGame::LoadRoom(int x, int y)
@@ -160,6 +193,31 @@ void DungeonGame::LoadRoom(int x, int y)
 	const char* fileName = RoomFiles[index];
 
 	LoadRoom(fileName);
+}
+
+bool DungeonGame::FirstWalkable(int& posX, int& posY)
+{
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			if (Tiles[x][y].Walkable)
+			{
+				posX = x;
+				posY = y;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void DungeonGame::SetPlayerPos()
+{
+	if (FirstWalkable(spawnPosX, spawnPosY))
+	{
+		this->Hero->SetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
+	}
 }
 
 void DungeonGame::PlayerMove(Direction dir)
@@ -183,7 +241,12 @@ void DungeonGame::PlayerMove(Direction dir)
 		return;
 	}
 
+	
+
+	
+
 	this->Hero->SetCurrentPos(newX, newY, tileSizeX);
+	
 }
 
 /*void DungeonGame::PlayerMove(Direction dir)
@@ -223,7 +286,7 @@ void DungeonGame::test()
 	//tile.NorthNeighbour = GetNeighbour(posx, posy, North);
 	//std::cout << tile.NorthNeighbour << std::endl;
 	//std::cout << tile.NorthNeighbour->X << ", " << tile.NorthNeighbour->Y << std::endl;
-	std::cout << tile.EastNeightbour->X << ", " << tile.EastNeightbour->Y << std::endl;
+	//std::cout << tile.EastNeightbour->X << ", " << tile.EastNeightbour->Y << std::endl;
 
 }
 

@@ -6,6 +6,7 @@ class Tile
 	static bool CompareColours(SDL_Color& col1, SDL_Color& col2);
 
 public:
+	Tile();
 	int X;
 	int Y;
 	bool Walkable;

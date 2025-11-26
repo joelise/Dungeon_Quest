@@ -33,9 +33,12 @@ public:
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
 	int RandomNum();
+	Tile Tiles[RoomSize][RoomSize];
 	void RandomizeDungeon();
 	void LoadRoom(const char* file);
 	void LoadRoom(int x, int y);
+	bool FirstWalkable(int& posX, int& posY);
+	void SetPlayerPos();
 	//void PlayerMovement(Direction dir, int tile);
 	//void PlayerMove(Direction);
 	void PlayerMove(Direction dir);
@@ -51,13 +54,14 @@ public:
 	void Update(double);
 	SDL_Texture* Carpets[TextureAmount];
 	SDL_Surface* CarpetSurf;
-	Tile Tiles[RoomSize][RoomSize];
+	
 
 	
 	Tile* tileRef;
 	//SDL_Surface* RoomSurf;
 	Tile* GetNeighbour(int currentX, int currentY, Direction dir);
 	void SetNeighbour();
+	void TryMove(int x, int y, Direction dir, Tile* n);
 	void test();
 	MoveResult* MoveResult;
 	
