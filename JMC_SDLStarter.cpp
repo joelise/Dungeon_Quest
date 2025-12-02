@@ -9,8 +9,8 @@
 
 using namespace std;
 
-const int resX = 1027;
-const int resY = 768;
+const int resX = 1000;
+const int resY = 1000;
 const int GridSizeX = 10;
 const int GridSizeY = 10;
 const float TileSize = resY / GridSizeX;
@@ -59,14 +59,19 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     {
         cout << "Null";
     }
-    Game->RandomizeDungeon();
+
+    Game->StartGame(renderer);
+
+    //Game->RandomizeDungeon();
+    //Game->RandomRoom();
     
-   Game->LoadRoom(TileSize, TileSize);
-   Game->SetNeighbour();
-    Game->LoadTextures(renderer);
+    
+   //Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
+   //Game->SetNeighbour();
+    //Game->LoadTextures(renderer);
    
     
-    Game->SetPlayerPos();
+    //Game->SetPlayerPos();
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -146,7 +151,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
-   Game->LoadRoom(TileSize, TileSize);
+    //Game->RandomRoom();
+   Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
     Game->SetNeighbour();
     
    // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);

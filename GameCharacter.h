@@ -18,6 +18,7 @@ public:
 	SDL_FRect* GetRect();
 	SDL_Texture* Texture;
 	SDL_FRect Rect;
+	Tile* CurrentTile;
 
 private:
 	bool isAlive = true;

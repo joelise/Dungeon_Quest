@@ -18,6 +18,8 @@ const int TextureAmount = sizeof(path_Carpet) / sizeof(path_Carpet[0]);
 const static char* RoomFiles[]{ "Data/Rooms/Room01.bmp", "Data/Rooms/Room02.bmp", "Data/Rooms/Room03.bmp", "Data/Rooms/Room04.bmp", "Data/Rooms/Room05.bmp" };
 const int NumRoomsX = 10;
 const int NumRoomsY = 10;
+//static int CurrentRoomX;
+//static int CurrentRoomY;
 //const static std::string room_Path = "Data / Rooms / Room01.bmp";
 
 //const char* Room[] = { "Data/Rooms/Room01.bmp" };
@@ -35,6 +37,7 @@ public:
 	int RandomNum();
 	Tile Tiles[RoomSize][RoomSize];
 	void RandomizeDungeon();
+	void RandomRoom();
 	void LoadRoom(const char* file);
 	void LoadRoom(int x, int y);
 	bool FirstWalkable(int& posX, int& posY);
@@ -49,6 +52,9 @@ public:
 	int spawnPosY = 5;
 
 	int DungeonLayout[NumRoomsX][NumRoomsY];
+	
+	int CurrentRoomX;
+	int CurrentRoomY;
 	int RoomTypes = sizeof(RoomFiles) / sizeof(RoomFiles[0]);
 	
 	void Update(double);
@@ -62,8 +68,11 @@ public:
 	Tile* GetNeighbour(int currentX, int currentY, Direction dir);
 	void SetNeighbour();
 	void TryMove(int x, int y, Direction dir, Tile* n);
+	void UpdateRoom(Direction dir);
 	void test();
 	MoveResult* MoveResult;
+
+	void StartGame(SDL_Renderer* renderer);
 	
 private:
 	float tileSizeX;
