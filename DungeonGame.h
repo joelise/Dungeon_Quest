@@ -11,7 +11,7 @@
 
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
-const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textures/Tile_carpet_blood_1.bmp", "Textures/Tile_carpet_bones"};
+const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textures/Tile_carpet_blood_1.bmp", "Textures/Tile_carpet_bones.bmp"};
 
 const int TextureAmount = sizeof(path_Carpet) / sizeof(path_Carpet[0]);
 
@@ -56,7 +56,7 @@ public:
 	int CurrentRoomX;
 	int CurrentRoomY;
 	int RoomTypes = sizeof(RoomFiles) / sizeof(RoomFiles[0]);
-	
+	//int CarpetTypes = sizeof(path_Carpet) / sizeof(path_Carpet[0]);
 	void Update(double);
 	SDL_Texture* Carpets[TextureAmount];
 	SDL_Surface* CarpetSurf;

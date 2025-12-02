@@ -48,6 +48,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 
 	for (int i = 0; i < TextureAmount; i++)
 	{
+		
 		CarpetSurf = SDL_LoadBMP(path_Carpet[i].c_str());
 		Carpets[i] = SDL_CreateTextureFromSurface(renderer, CarpetSurf);
 		SDL_SetTextureScaleMode(Carpets[i], SDL_SCALEMODE_NEAREST);
@@ -283,23 +284,33 @@ void DungeonGame::PlayerMove(Direction dir)
 
 		switch (dir)
 		{
-		case North: nextRoomY = -1; break;
-		case East: nextRoomX = 1; break;
-		case South: nextRoomY = 1; break;
-		case West: nextRoomX = -1; break;
+		case North: nextRoomY = CurrentRoomY - 1; break;
+		case East: nextRoomX = CurrentRoomX + 1; break;
+		case South: nextRoomY = CurrentRoomY + 1; break;
+		case West: nextRoomX = CurrentRoomX - 1; break;
 		}
 
+		
 		UpdateRoom(dir);
 		LoadRoom(nextRoomX, nextRoomY);
-		
+
 		switch (dir)
+		{
+		case North: this->Hero->SetCurrentPos(posX, RoomSize - 1, tileSizeX); break;
+		case East:this->Hero->SetCurrentPos(0, posY, tileSizeX); break;
+		case South:this->Hero->SetCurrentPos(posX, 0, tileSizeX); break;
+		case West: this->Hero->SetCurrentPos(RoomSize - 1, posY, tileSizeX); break;
+		}
+		
+		this->Hero->CurrentTile = &Tiles[this->Hero->PosX][this->Hero->PosY];
+		/*switch (dir)
 		{
 		case North: this->Hero->CurrentTile = &Tiles[current->X][RoomSize - 1]; break;
 		case East:this->Hero->CurrentTile = &Tiles[0][current->Y]; break;
 		case South:this->Hero->CurrentTile = &Tiles[current->X][0]; break;
 		case West: this->Hero->CurrentTile = &Tiles[RoomSize - 1][current->Y]; break;
-		}
-		this->Hero->CurrentTile = &Tiles[newX][newY];
+		}*/
+		//this->Hero->CurrentTile = &Tiles[newX][newY];
 		//this->Hero->SetCurrentPos(newX, newY, tileSizeX);
 		//current = &Tiles[newX][newY];
 		//this->Hero->CurrentTile = current;
@@ -314,8 +325,9 @@ void DungeonGame::PlayerMove(Direction dir)
 		//this->Hero->SetCurrentPos(target->X, target->Y, tileSizeX);
 		//current = target;
 		this->Hero->SetCurrentPos(newX, newY, tileSizeX);
-		current = &Tiles[newX][newY];
-		this->Hero->CurrentTile = current;
+		this->Hero->CurrentTile = &Tiles[newX][newY];
+		//current = &Tiles[newX][newY];
+		//this->Hero->CurrentTile = current;
 		//current = target;
 		//target = &Tiles[newX][newY];
 	}
