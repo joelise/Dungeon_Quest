@@ -94,7 +94,7 @@ void DungeonGame::RandomRoom()
 	std::cout << "Starting in Random Room ( " << CurrentRoomX << ", " << CurrentRoomY << ")" << std::endl;
 }
 
-Tile* DungeonGame::GetNeighbour(int currentX, int currentY, Direction dir)
+/*Tile* DungeonGame::GetNeighbour(int currentX, int currentY, Direction dir)
 {
 	switch (dir)
 	{
@@ -115,7 +115,7 @@ Tile* DungeonGame::GetNeighbour(int currentX, int currentY, Direction dir)
 		return &Tiles[currentX - 1][currentY];
 
 	}
-}
+}*/
 
 void DungeonGame::SetNeighbour()
 {
@@ -123,19 +123,19 @@ void DungeonGame::SetNeighbour()
 	{
 		for (int y = 0; y < RoomSize; y++)
 		{
-			Tile& tile = Tiles[x][y];
+			Tile* tile = &Tiles[x][y];
 			
 			// North
-			(y == 0) ? tile.NorthNeighbour = nullptr : tile.NorthNeighbour = &Tiles[x][y - 1];
+			(y == 0) ? tile->NorthNeighbour = nullptr : tile->NorthNeighbour = &Tiles[x][y - 1];
 			
 			// East
-			(x == RoomSize - 1) ? tile.EastNeightbour = nullptr : tile.EastNeightbour = &Tiles[x + 1][y];
+			(x == RoomSize - 1) ? tile->EastNeightbour = nullptr : tile->EastNeightbour = &Tiles[x + 1][y];
 
 			// South
-			(y == RoomSize - 1) ? tile.SouthNeighbour = nullptr : tile.SouthNeighbour = &Tiles[x][y + 1];
+			(y == RoomSize - 1) ? tile->SouthNeighbour = nullptr : tile->SouthNeighbour = &Tiles[x][y + 1];
 
 			// West
-			(x == 0) ? tile.WestNeighbour = nullptr : tile.WestNeighbour = &Tiles[x - 1][y];
+			(x == 0) ? tile->WestNeighbour = nullptr : tile->WestNeighbour = &Tiles[x - 1][y];
 		}
 	}
 
@@ -154,6 +154,7 @@ void DungeonGame::LoadRoom(const char* file)
 		{
 			//std::cout << "Reseting tile x=" << x << "y=" << y << std::endl;
 			this->Tiles[x][y] = Tile();
+			SetNeighbour();
 		}
 	}
 	SDL_Surface* surface = SDL_LoadBMP(file);
@@ -240,17 +241,14 @@ void DungeonGame::UpdateRoom(Direction dir)
 	case South: CurrentRoomY++; break;
 	case West: CurrentRoomX--; break;
 	}
-
-
 }
 
 void DungeonGame::PlayerMove(Direction dir)
 {
-
 	int posX = this->Hero->PosX;
 	int posY = this->Hero->PosY;
-
 	this->Hero->CurrentTile = &Tiles[posX][posY];
+
 	int dirX = 0;
 	int dirY = 0;
 
@@ -265,9 +263,10 @@ void DungeonGame::PlayerMove(Direction dir)
 	int newX = this->Hero->PosX + dirX;
 	int newY = this->Hero->PosY + dirY;
 
-	//this->Hero->CurrentTile = &Tiles[newX][newY];
+	
 	Tile* target = nullptr;
 	Tile* current = this->Hero->CurrentTile;
+
 	switch (dir)
 	{
 	case North: target = current->NorthNeighbour; break;
@@ -275,7 +274,6 @@ void DungeonGame::PlayerMove(Direction dir)
 	case South: target = current->SouthNeighbour; break;
 	case West: target = current->WestNeighbour; break;
 	}
-
 
 	if (target == nullptr)
 	{
@@ -290,7 +288,8 @@ void DungeonGame::PlayerMove(Direction dir)
 		case West: nextRoomX = CurrentRoomX - 1; break;
 		}
 
-		
+		if (nextRoomX < 0 || nextRoomX > NumRoomsX - 1 || nextRoomY < 0 || nextRoomY > NumRoomsY - 1) return;
+
 		UpdateRoom(dir);
 		LoadRoom(nextRoomX, nextRoomY);
 
@@ -303,44 +302,15 @@ void DungeonGame::PlayerMove(Direction dir)
 		}
 		
 		this->Hero->CurrentTile = &Tiles[this->Hero->PosX][this->Hero->PosY];
-		/*switch (dir)
-		{
-		case North: this->Hero->CurrentTile = &Tiles[current->X][RoomSize - 1]; break;
-		case East:this->Hero->CurrentTile = &Tiles[0][current->Y]; break;
-		case South:this->Hero->CurrentTile = &Tiles[current->X][0]; break;
-		case West: this->Hero->CurrentTile = &Tiles[RoomSize - 1][current->Y]; break;
-		}*/
-		//this->Hero->CurrentTile = &Tiles[newX][newY];
-		//this->Hero->SetCurrentPos(newX, newY, tileSizeX);
-		//current = &Tiles[newX][newY];
-		//this->Hero->CurrentTile = current;
+		
 		return;
 	}
 
 	if (target->Walkable)
 	{
-		//this->Hero->CurrentTile = target;
-		//this->Hero->CurrentTile = &Tiles[target->X][target->Y];
-		//this->Hero->CurrentTile = target;
-		//this->Hero->SetCurrentPos(target->X, target->Y, tileSizeX);
-		//current = target;
 		this->Hero->SetCurrentPos(newX, newY, tileSizeX);
 		this->Hero->CurrentTile = &Tiles[newX][newY];
-		//current = &Tiles[newX][newY];
-		//this->Hero->CurrentTile = current;
-		//current = target;
-		//target = &Tiles[newX][newY];
 	}
-		//return;
-	
-
-
-
-
-	//this->Hero->SetCurrentPos(newX, newY, tileSizeX);
-	//current = &Tiles[newX][newY];
-
-	
 }
 
 /*void DungeonGame::PlayerMove(Direction dir)
@@ -431,6 +401,8 @@ void DungeonGame::test()
 	//std::cout << tile.EastNeightbour->X << ", " << tile.EastNeightbour->Y << std::endl;
 
 }
+
+
 
 void DungeonGame::StartGame(SDL_Renderer* renderer)
 {

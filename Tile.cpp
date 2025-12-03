@@ -42,3 +42,15 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture
 
 	//this->Rect = rect;
 }
+
+Tile* Tile::GetNeighbour(Direction dir)
+{
+	switch (dir)
+	{
+	case North: return NorthNeighbour;
+	case East: return EastNeightbour;
+	case South: return SouthNeighbour;
+	case West: return WestNeighbour;
+	default: return nullptr;
+	}
+}

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDl.h>
+#include "Enums.h"
 
 class Tile
 {
@@ -17,6 +18,8 @@ public:
 	Tile* EastNeightbour;
 	Tile* SouthNeighbour;
 	Tile* WestNeighbour;
+
+	Tile* GetNeighbour(Direction dir);
 	
 	
 };

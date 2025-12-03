@@ -65,12 +65,13 @@ public:
 	
 	Tile* tileRef;
 	//SDL_Surface* RoomSurf;
-	Tile* GetNeighbour(int currentX, int currentY, Direction dir);
+	//Tile* GetNeighbour(int currentX, int currentY, Direction dir);
 	void SetNeighbour();
 	void TryMove(int x, int y, Direction dir, Tile* n);
 	void UpdateRoom(Direction dir);
 	void test();
-	MoveResult* MoveResult;
+	//MoveResult* MoveResult;
+	//MoveResult* TryMove(int currentX, int currentY, Direction dir);
 
 	void StartGame(SDL_Renderer* renderer);
 	

@@ -18,6 +18,8 @@ public:
 	SDL_FRect* GetRect();
 	SDL_Texture* Texture;
 	SDL_FRect Rect;
+	int PosX;
+	int PosY;
 	Tile* CurrentTile;
 
 private:

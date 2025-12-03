@@ -153,7 +153,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
     //Game->RandomRoom();
    Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
-    Game->SetNeighbour();
+    //Game->SetNeighbour();
     
    // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
     //
