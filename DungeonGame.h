@@ -44,7 +44,7 @@ public:
 	void SetPlayerPos();
 	//void PlayerMovement(Direction dir, int tile);
 	//void PlayerMove(Direction);
-	void PlayerMove(Direction dir);
+	//void PlayerMove(Direction dir);
 	Player* Hero;
 	int PlayerPosX;
 	int PlayerPosY;
@@ -65,12 +65,20 @@ public:
 	
 	Tile* tileRef;
 	//SDL_Surface* RoomSurf;
-	//Tile* GetNeighbour(int currentX, int currentY, Direction dir);
+	Tile* GetNeighbour(int currentX, int currentY, Direction dir);
 	void SetNeighbour();
 	void TryMove(int x, int y, Direction dir, Tile* n);
+	MoveResult TryMove(GameCharacter* character, Direction dir);
 	void UpdateRoom(Direction dir);
+	void LoadRoom(Direction dir);
+	void PlayerMovement(Direction dir);
+	void TryMoveResult(MoveResult& result, Direction dir);
+	void Input(Direction dir);
+	//MoveResult TryMove(GameCharacter* character, Direction dir);
+	//void PlayerMove(Direction dir);
 	void test();
 	//MoveResult* MoveResult;
+	void TryMove(int x, int y, GameCharacter* character, Tile* n, Direction dir);
 	//MoveResult* TryMove(int currentX, int currentY, Direction dir);
 
 	void StartGame(SDL_Renderer* renderer);

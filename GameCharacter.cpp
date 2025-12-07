@@ -9,6 +9,16 @@ GameCharacter::~GameCharacter()
 {
 }
 
+/*void GameCharacter::SetCurrentPos(float x, float y, float tileSize)
+{
+	PosX = x;
+	PosY = y;
+	this->Rect.x = x * tileSize;
+	this->Rect.y = y * tileSize;
+	this->Rect.h = tileSize;
+	this->Rect.w = tileSize;
+}*/
+
 void GameCharacter::Attack(GameCharacter& other)
 {
 }
@@ -39,3 +49,4 @@ SDL_FRect* GameCharacter::GetRect()
 {
 	return nullptr;
 }
+

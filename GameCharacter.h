@@ -9,6 +9,7 @@ class GameCharacter
 public:
 	GameCharacter();	// Constructer, called when created
 	~GameCharacter();	// Destructer, called when destroyed
+	//virtual void SetCurrentPos(float x, float y, float tileSize);
 	virtual void Attack(GameCharacter& other);
 	virtual void Killed();
 	virtual void Update(float dt);	// For anything time releated
@@ -21,6 +22,7 @@ public:
 	int PosX;
 	int PosY;
 	Tile* CurrentTile;
+	
 
 private:
 	bool isAlive = true;

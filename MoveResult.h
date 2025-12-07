@@ -8,16 +8,20 @@ class MoveResult
 public:
 	MoveResult();
 	~MoveResult();
-	MoveResult(Tile* n);
+	MoveResult(Tile* tile, MoveResultAction action);
+	//MoveResult(Tile* n);
 	Tile* GetTile();
 	void SetAction(MoveResultAction a);
 	MoveResultAction GetAction();
-	MoveResult* TryMove(int currentX, int currentY, Direction dir);
+	//oveResult TryMove(int currentX, int currentY, Direction dir);
 
+	
+	
+	
 
 private:
-	MoveResultAction action;
-	GameCharacter* character;
 	Tile* tile;
+	GameCharacter* character;
+	MoveResultAction action;
 };
 
