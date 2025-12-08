@@ -65,6 +65,12 @@ int DungeonGame::RandomNum()
 	return rand() % RoomTypes;
 }
 
+int DungeonGame::RandomDir()
+{
+	int dir = 4;
+	return rand() % dir;
+}
+
 void DungeonGame::RandomizeDungeon()
 {
 	for (int x = 0; x < NumRoomsX; x++)
@@ -140,6 +146,25 @@ void DungeonGame::SetNeighbour()
 	}
 
 }
+
+/*Tile* DungeonGame::FindNeighbour(Direction dir)
+{
+	Tile* target = nullptr;
+	int posX = this->Hero->PosX;
+	int posY = this->Hero->PosY;
+	this->Hero->CurrentTile = &Tiles[posX][posY];
+	Tile* current = this->Hero->CurrentTile;
+
+	switch (dir)
+	{
+	case North: target = current->NorthNeighbour; return target;
+	case East: target = current->EastNeightbour; return target;
+	case South: target = current->SouthNeighbour;return target;
+	case West: target = current->WestNeighbour; return target;
+	}
+
+	
+}*/
 
 
 
@@ -232,7 +257,7 @@ void DungeonGame::SetPlayerPos()
 	}
 }
 
-MoveResult DungeonGame::TryMove(GameCharacter* character, Direction dir)
+/*MoveResult DungeonGame::TryMove(GameCharacter* character, Direction dir)
 {
 
 	Tile* target = GetNeighbour(character->PosX, character->PosY, dir);
@@ -260,7 +285,7 @@ MoveResult DungeonGame::TryMove(GameCharacter* character, Direction dir)
 
 	
 	
-}
+}*/
 
 void DungeonGame::UpdateRoom(Direction dir)
 {
@@ -305,7 +330,7 @@ void DungeonGame::LoadRoom(Direction dir)
 	this->Hero->CurrentTile = &Tiles[this->Hero->PosX][this->Hero->PosY];
 }
 
-void DungeonGame::PlayerMovement(Direction dir)
+/*void DungeonGame::PlayerMovement(Direction dir)
 {
 	int posX = this->Hero->PosX;
 	int posY = this->Hero->PosY;
@@ -325,11 +350,62 @@ void DungeonGame::PlayerMovement(Direction dir)
 	int newX = this->Hero->PosX + dirX;
 	int newY = this->Hero->PosY + dirY;
 
-	this->Hero->SetCurrentPos(newX, newY, tileSizeX);
-	this->Hero->CurrentTile = &Tiles[newX][newY];
+	this->Hero->NewPosX = newX;
+	this->Hero->NewPosY = newY;
 }
 
-void DungeonGame::TryMoveResult(MoveResult& result, Direction dir)
+void DungeonGame::MovePlayer()
+{
+	this->Hero->SetCurrentPos(this->Hero->NewPosX, this->Hero->NewPosY, tileSizeX);
+	this->Hero->CurrentTile = &Tiles[this->Hero->NewPosX][this->Hero->NewPosY];
+
+	this->Hero->PosX = this->Hero->NewPosX;
+	this->Hero->PosY = this->Hero->NewPosY;
+	this->Hero->CurrentTile = &Tiles[this->Hero->PosX][this->Hero->PosY];
+	
+
+
+}
+
+MoveResultAction DungeonGame::SetAction(Direction dir)
+{
+	MoveResultAction action;
+	int posX = this->Hero->PosX;
+	int posY = this->Hero->PosY;
+	this->Hero->CurrentTile = &Tiles[posX][posY];
+
+	//Tile* target = nullptr;
+	Tile* target = FindNeighbour(dir);
+
+	if (target->Walkable) MoveResultAction::MoveOk;
+	if (!target->Walkable) MoveResultAction::Blocked;
+	if (target == nullptr) MoveResultAction::LoadNewRoom;
+	//else MoveResultAction::Undefined;
+	
+	return MoveResultAction();
+}
+
+void DungeonGame::MoveResult(MoveResultAction action, Direction dir)
+{
+	switch (action)
+	{
+	case MoveOk: MovePlayer(); break;
+	case Blocked: break;
+	case LoadNewRoom: LoadRoom(dir); break;
+	default: Undefined;
+	}
+}
+
+void DungeonGame::TryMove(Direction dir)
+{
+	MoveResultAction action;
+	action = SetAction(dir);
+	PlayerMovement(dir);
+	MoveResult(action, dir);
+
+}
+
+/*void DungeonGame::TryMoveResult(MoveResult& result, Direction dir)
 {
 	switch (result.GetAction())
 	{
@@ -340,14 +416,14 @@ void DungeonGame::TryMoveResult(MoveResult& result, Direction dir)
 	}
 
 	
-}
+}*/
 
-void DungeonGame::Input(Direction dir)
+/*void DungeonGame::Input(Direction dir)
 {
 	MoveResult result = TryMove(this->Hero, dir);
 	TryMoveResult(result, dir);
 
-}
+}*/
 
 /*MoveResult DungeonGame::TryMove(GameCharacter* character, Direction dir)
 {
@@ -422,7 +498,7 @@ void DungeonGame::PlayerMove(Direction dir)
 	}
 }*/
 
-/*void DungeonGame::PlayerMove(Direction dir)
+void DungeonGame::PlayerMove(Direction dir)
 {
 	int posX = this->Hero->PosX;
 	int posY = this->Hero->PosY;
@@ -456,31 +532,7 @@ void DungeonGame::PlayerMove(Direction dir)
 
 	if (target == nullptr)
 	{
-		int nextRoomX = CurrentRoomX;
-		int nextRoomY = CurrentRoomY;
-
-		switch (dir)
-		{
-		case North: nextRoomY = CurrentRoomY - 1; break;
-		case East: nextRoomX = CurrentRoomX + 1; break;
-		case South: nextRoomY = CurrentRoomY + 1; break;
-		case West: nextRoomX = CurrentRoomX - 1; break;
-		}
-
-		if (nextRoomX < 0 || nextRoomX > NumRoomsX - 1 || nextRoomY < 0 || nextRoomY > NumRoomsY - 1) return;
-
-		UpdateRoom(dir);
-		LoadRoom(nextRoomX, nextRoomY);
-
-		switch (dir)
-		{
-		case North: this->Hero->SetCurrentPos(posX, RoomSize - 1, tileSizeX); break;
-		case East:this->Hero->SetCurrentPos(0, posY, tileSizeX); break;
-		case South:this->Hero->SetCurrentPos(posX, 0, tileSizeX); break;
-		case West: this->Hero->SetCurrentPos(RoomSize - 1, posY, tileSizeX); break;
-		}
-		
-		this->Hero->CurrentTile = &Tiles[this->Hero->PosX][this->Hero->PosY];
+		LoadRoom(dir);
 		
 		return;
 	}
@@ -490,7 +542,7 @@ void DungeonGame::PlayerMove(Direction dir)
 		this->Hero->SetCurrentPos(newX, newY, tileSizeX);
 		this->Hero->CurrentTile = &Tiles[newX][newY];
 	}
-}*/
+}
 
 /*void DungeonGame::PlayerMove(Direction dir)
 {

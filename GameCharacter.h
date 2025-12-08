@@ -21,6 +21,8 @@ public:
 	SDL_FRect Rect;
 	int PosX;
 	int PosY;
+	int NewPosX;
+	int NewPosY;
 	Tile* CurrentTile;
 	
 

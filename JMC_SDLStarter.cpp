@@ -88,31 +88,35 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         if (event->key.scancode == SDL_SCANCODE_W)
         {
             //Game->PlayerMovement(North, TileSize);
-            Game->Input(North);
+            //Game->Input(North);
+            //Game->TryMove(North);
 
             //Game->PlayerMovement(North);
-            //Game->PlayerMove(North);
+            Game->PlayerMove(North);
             Game->test();
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
             //Game->PlayerMovement(South, TileSize);
-            Game->Input(South);
-            //Game->PlayerMove(South);
+            //Game->Input(South);
+            //Game->TryMove(South);
+            Game->PlayerMove(South);
             Game->test();
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            Game->Input(West);
+            //Game->Input(West);
+            //Game->TryMove(West);
             //Game->PlayerMovement(West, TileSize);
-            //Game->PlayerMove(West);
+            Game->PlayerMove(West);
             Game->test();
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            Game->Input(East);
+            //Game->Input(East);
+            //Game->TryMove(East);
             //Game->PlayerMovement(East, TileSize);
-           // Game->PlayerMove(East);
+            Game->PlayerMove(East);
             Game->test();
         }
 
