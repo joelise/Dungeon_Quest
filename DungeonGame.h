@@ -13,7 +13,8 @@
 
 const static std::string path_Hero = "Textures/Hero_sword.png";
 const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textures/Tile_carpet_blood_1.bmp", "Textures/Tile_carpet_bones.bmp"};
-const static std::string path_Enemy[]{ "Textures/Enemy_orc_blue.png", "Textures/Enemy_orc_grey.png", "Textures/Enemy_orc_orange.png", "Textures/Enemy_orc_red.png"};
+//const static std::string path_Enemy[]{ "Textures/Enemy_orc_blue.png", "Textures/Enemy_orc_grey.png", "Textures/Enemy_orc_orange.png", "Textures/Enemy_orc_red.png"};
+const static std::string path_Enemy{ "Textures/Enemy_orc_blue.png" };
 
 const int TextureAmount = sizeof(path_Carpet) / sizeof(path_Carpet[0]);
 

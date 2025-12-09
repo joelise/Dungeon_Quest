@@ -13,6 +13,8 @@ DungeonGame::DungeonGame(float tileSizeX, float tileSizeY)
 DungeonGame::~DungeonGame()
 {
 	delete this->Hero;
+
+	delete this->Enemy;
 }
 
 void DungeonGame::LoadTextures(SDL_Renderer* renderer)
@@ -20,6 +22,15 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Hero = new Player;
 	this->Hero->Texture = IMG_LoadTexture(renderer, path_Hero.c_str());
 	SDL_SetTextureScaleMode(this->Hero->Texture, SDL_SCALEMODE_NEAREST);
+
+	this->Enemy = new Goblin;
+	this->Enemy->Texture = IMG_LoadTexture(renderer, path_Enemy.c_str());
+	SDL_SetTextureScaleMode(this->Enemy->Texture, SDL_SCALEMODE_NEAREST);
+
+	this->Enemy->Rect.x = 5;
+	this->Enemy->Rect.y = 5;
+	this->Enemy->Rect.h = tileSizeX;
+	this->Enemy->Rect.w = tileSizeY;
 	//this->Hero->SetCurrentPos(spawnPosX, spawnPosY, tileSizeX);
 	//this->Hero->Rect.x = 5;
 	//this->Hero->Rect.y = 5;

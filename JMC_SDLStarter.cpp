@@ -161,6 +161,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
+    SDL_RenderTexture(renderer, Game->Enemy->Texture, NULL, & Game->Enemy->Rect);
     //Game->RandomRoom();
    Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
     //Game->SetNeighbour();
