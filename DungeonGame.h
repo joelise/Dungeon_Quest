@@ -39,7 +39,7 @@ public:
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
 	int RandomNum();
-	int RandomDir();
+	Direction RandomDir();
 	Tile Tiles[RoomSize][RoomSize];
 	void RandomizeDungeon();
 	void RandomRoom();
@@ -47,6 +47,10 @@ public:
 	void LoadRoom(int x, int y);
 	bool FirstWalkable(int& posX, int& posY);
 	void SetPlayerPos();
+	void SetEnemyPos();
+	void SetTile();
+	void EnemyCheck();
+	bool EnemyisAlive();
 	//void PlayerMovement(Direction dir, int tile);
 	//void PlayerMove(Direction);
 	//void PlayerMove(Direction dir);
@@ -87,6 +91,7 @@ public:
 	//void Input(Direction dir);
 	//MoveResult TryMove(GameCharacter* character, Direction dir);
 	void PlayerMove(Direction dir);
+	void EnemyMove(Direction dir);
 	void test();
 	//MoveResult* MoveResult;
 	void TryMove(int x, int y, GameCharacter* character, Tile* n, Direction dir);

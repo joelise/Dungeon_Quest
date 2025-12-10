@@ -61,6 +61,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     Game->StartGame(renderer);
+    Game->test();
+    //Game->EnemyisAlive();
 
     //Game->RandomizeDungeon();
     //Game->RandomRoom();
@@ -137,6 +139,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     now = SDL_GetPerformanceCounter();
     double deltaTime = (double)((now - last) / (double)SDL_GetPerformanceFrequency());
     Game->Update(deltaTime);
+    Game->EnemyCheck();
 
     /* as you can see from this, rendering draws over whatever was drawn before it. */
     SDL_SetRenderDrawColor(renderer, 33, 33, 33, SDL_ALPHA_OPAQUE);  /* dark gray, full alpha */
@@ -161,9 +164,14 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
-    SDL_RenderTexture(renderer, Game->Enemy->Texture, NULL, & Game->Enemy->Rect);
+    if (Game->Enemy->IsAlive)
+    {
+        SDL_RenderTexture(renderer, Game->Enemy->Texture, NULL, &Game->Enemy->Rect);
+    }
+    
     //Game->RandomRoom();
    Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
+   Game->SetTile();
     //Game->SetNeighbour();
     
    // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);

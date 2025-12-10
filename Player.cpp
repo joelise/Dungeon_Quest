@@ -15,7 +15,7 @@
 	
 }*/
 
-void Player::SetCurrentPos(float x, float y, float tileSize)
+/*void Player::SetCurrentPos(float x, float y, float tileSize)
 {
 	PosX = x;
 	PosY = y;
@@ -23,7 +23,7 @@ void Player::SetCurrentPos(float x, float y, float tileSize)
 	this->Rect.y = y * tileSize;
 	this->Rect.h = tileSize;
 	this->Rect.w = tileSize;
-}
+}*/
 
 void Player::MovePlayer(Direction dir, Player* player, float tile)
 {

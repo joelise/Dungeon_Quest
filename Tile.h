@@ -18,6 +18,8 @@ public:
 	Tile* EastNeightbour;
 	Tile* SouthNeighbour;
 	Tile* WestNeighbour;
+	bool HasEnemy;
+	bool HasHero;
 
 	Tile* GetNeighbour(Direction dir);
 	

@@ -9,7 +9,7 @@ GameCharacter::~GameCharacter()
 {
 }
 
-/*void GameCharacter::SetCurrentPos(float x, float y, float tileSize)
+void GameCharacter::SetCurrentPos(float x, float y, float tileSize)
 {
 	PosX = x;
 	PosY = y;
@@ -17,7 +17,7 @@ GameCharacter::~GameCharacter()
 	this->Rect.y = y * tileSize;
 	this->Rect.h = tileSize;
 	this->Rect.w = tileSize;
-}*/
+}
 
 void GameCharacter::Attack(GameCharacter& other)
 {
