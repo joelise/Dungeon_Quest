@@ -18,8 +18,7 @@ const float TileSize = resY / GridSizeX;
 // Global tile sizes
 static const int TileWidth = resX / 10;
 static const int TileHeight = resY / 10;
-// Hero rect
-//static SDL_FRect heroRect{ 0, 0, TileWidth, TileHeight };
+
 
  /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
@@ -29,9 +28,7 @@ static SDL_Texture* texture = NULL;
 static const char* ProjectName = "JMC Starter Project";
 const static char* Room = { "Data/Rooms/Room04.bmp" };
 static DungeonGame* Game;
-static Player* player;
-static Direction* dir;
-static Tile* tile;
+
 
 static Uint64 now;
 static Uint64 last;
@@ -61,19 +58,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     Game->StartGame(renderer);
-    Game->test();
-    //Game->EnemyisAlive();
 
-    //Game->RandomizeDungeon();
-    //Game->RandomRoom();
-    
-    
-   //Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
-   //Game->SetNeighbour();
-    //Game->LoadTextures(renderer);
-   
-    
-    //Game->SetPlayerPos();
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -89,37 +74,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         // keyboard events    
         if (event->key.scancode == SDL_SCANCODE_W)
         {
-            //Game->PlayerMovement(North, TileSize);
-            //Game->Input(North);
-            //Game->TryMove(North);
-
-            //Game->PlayerMovement(North);
             Game->PlayerMove(North);
-            Game->test();
         }
         if (event->key.scancode == SDL_SCANCODE_S)
         {
-            //Game->PlayerMovement(South, TileSize);
-            //Game->Input(South);
-            //Game->TryMove(South);
             Game->PlayerMove(South);
-            Game->test();
         }
         if (event->key.scancode == SDL_SCANCODE_A)
         {
-            //Game->Input(West);
-            //Game->TryMove(West);
-            //Game->PlayerMovement(West, TileSize);
             Game->PlayerMove(West);
-            Game->test();
         }
         if (event->key.scancode == SDL_SCANCODE_D)
         {
-            //Game->Input(East);
-            //Game->TryMove(East);
-            //Game->PlayerMovement(East, TileSize);
             Game->PlayerMove(East);
-            Game->test();
         }
 
     }
@@ -155,27 +122,22 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     {
         for (int y = 0; y < GridSizeY; y++)
         {
-            
             SDL_RenderTexture(renderer, Game->Tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
-            //SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
-            //SDL_RenderTexture(renderer, Game->Tiles[x][y].texture, NULL, &Game->Tiles[x][y].Rect);
         }
     }
 
     // Render the hero
     SDL_RenderTexture(renderer, Game->Hero->Texture, NULL, &Game->Hero->Rect);
+
+    // Render Enemy if Alive
     if (Game->Enemy->IsAlive)
     {
         SDL_RenderTexture(renderer, Game->Enemy->Texture, NULL, &Game->Enemy->Rect);
     }
     
-    //Game->RandomRoom();
+   
    Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);
-   Game->SetTile();
-    //Game->SetNeighbour();
-    
-   // SDL_RenderTexture(renderer, Game->tile->texture, NULL, &Game->tile->Rect);
-    //
+  
     SDL_RenderPresent(renderer);  /* put it all on the screen! */
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
