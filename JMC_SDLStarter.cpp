@@ -57,7 +57,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         cout << "Null";
     }
 
-    Game->StartGame(renderer);
+    //Game->StartGame(renderer);
+    Game->LoadBossRoom(renderer);
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -134,6 +135,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     {
         SDL_RenderTexture(renderer, Game->Enemy->Texture, NULL, &Game->Enemy->Rect);
     }
+
+    SDL_RenderTexture(renderer, Game->Boss->Texture, NULL, &Game->Boss->Rect);
     
    
    Game->LoadRoom(Game->CurrentRoomX, Game->CurrentRoomY);

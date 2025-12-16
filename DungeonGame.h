@@ -5,20 +5,24 @@
 #include "GameCharacter.h"
 #include "Player.h"
 #include "Goblin.h"
+#include "Minotaur.h"
 #include "Tile.h"
 #include "Enums.h"
 #include "MoveResult.h"
 #include <iostream>
 
+
 // Texture Paths
 const static std::string path_Hero = "Textures/Hero_sword.png";			// Hero
 const static std::string path_Carpet[]{ "Textures/Tile_carpet_base.bmp", "Textures/Tile_carpet_blood_1.bmp", "Textures/Tile_carpet_bones.bmp"};		// Carpet
 const static std::string path_Enemy{ "Textures/Enemy_orc_blue.png" };	// Enemy
+const static std::string path_Boss{ "Textures/Minotaur.png" };
 
 const int TextureAmount = sizeof(path_Carpet) / sizeof(path_Carpet[0]);	// Gets Carpet texture array length
 
 // Room Files and Values
 const static char* RoomFiles[]{ "Data/Rooms/Room01.bmp", "Data/Rooms/Room02.bmp", "Data/Rooms/Room03.bmp", "Data/Rooms/Room04.bmp", "Data/Rooms/Room05.bmp" };
+const static char* BossRoom[]{ "Data/Rooms/Room01.bmp" };
 const int NumRoomsX = 10;
 const int NumRoomsY = 10;
 const static int RoomSize = 10;
@@ -29,6 +33,7 @@ public:
 	Tile Tiles[RoomSize][RoomSize];
 	Player* Hero;
 	Goblin* Enemy;
+	Minotaur* Boss;
 	SDL_Texture* Carpets[TextureAmount];
 	SDL_Surface* CarpetSurf;
 	int spawnPosX = 5;
@@ -43,6 +48,7 @@ public:
 	DungeonGame(float tileSizeX, float tileSizeY);
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
+	void LoadBoss(SDL_Renderer* renderer);
 	int RandomRoomNum();
 	Direction RandomDir();
 	void RandomizeDungeon();
@@ -59,6 +65,7 @@ public:
 	void PlayerMove(Direction dir);
 	void EnemyMove(Direction dir);
 	void Update(double);
+	void LoadBossRoom(SDL_Renderer* renderer);
 	void StartGame(SDL_Renderer* renderer);
 	void test();
 

@@ -39,6 +39,9 @@
     <ClCompile Include="MoveResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Minotaur.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameCharacter.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MoveResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Minotaur.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

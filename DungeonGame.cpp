@@ -14,6 +14,7 @@ DungeonGame::~DungeonGame()
 {
 	delete this->Hero;
 	delete this->Enemy;
+	delete this->Boss;
 }
 
 void DungeonGame::LoadTextures(SDL_Renderer* renderer)
@@ -28,6 +29,10 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 	this->Enemy->Texture = IMG_LoadTexture(renderer, path_Enemy.c_str());	// Enemy Texture
 	SDL_SetTextureScaleMode(this->Enemy->Texture, SDL_SCALEMODE_NEAREST);	// Scales Texture
 
+	this->Boss = new Minotaur;
+	this->Boss->Texture = IMG_LoadTexture(renderer, path_Boss.c_str());		// Player Texture
+	SDL_SetTextureScaleMode(this->Boss->Texture, SDL_SCALEMODE_NEAREST);
+
 	// Loads Carpet Textures
 	for (int i = 0; i < TextureAmount; i++)
 	{
@@ -36,6 +41,13 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 		SDL_SetTextureScaleMode(Carpets[i], SDL_SCALEMODE_NEAREST);			// Scales Texture
 		SDL_DestroySurface(CarpetSurf);										// Release memory by deleting the surface 
 	}
+}
+
+void DungeonGame::LoadBoss(SDL_Renderer* renderer)
+{
+	
+	this->Boss->CurrentPos(0, 0, tileSizeX);
+	std::cout << "Boss loaded" << std::endl;
 }
 
 int DungeonGame::RandomRoomNum()
@@ -341,6 +353,17 @@ void DungeonGame::Update(double)
 	Direction dir = RandomDir();		// Gets a random direction to move enemy
 	
 	EnemyMove(dir);						// Trys to move enemy
+}
+
+void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
+{
+	const char* bossRoom = BossRoom[0];
+
+	LoadRoom(bossRoom);
+	SetNeighbour();
+	LoadTextures(renderer);
+	SetPlayerPos();
+	LoadBoss(renderer);
 }
 
 
