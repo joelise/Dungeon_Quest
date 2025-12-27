@@ -247,6 +247,54 @@ void DungeonGame::LoadRoom(Direction dir)
 	this->Hero->CurrentTile = &Tiles[this->Hero->PosX][this->Hero->PosY];		// Updates Hero current tile
 }
 
+int DungeonGame::ManhattanDistance(int x1, int y1, int x2, int y2)
+{
+	return std::abs(x1 - x2) + std::abs(y1 - y2);
+}
+
+
+
+void DungeonGame::SetHeuristic()
+{
+	int targetX = this->Hero->PosX;
+	int targetY = this->Hero->PosY;
+
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			Tiles[x][y].h = ManhattanDistance(x, y, targetX, targetY);
+			
+		}
+	}
+}
+
+Tile* DungeonGame::LowestNeighbour(Tile* current)
+{
+	Tile* Neighbour[] = { current->NorthNeighbour, current->EastNeightbour, current->SouthNeighbour, current->WestNeighbour };
+	Tile* lowestTile = nullptr;
+	int lowestF = INT_MAX;
+
+	for (Tile* n : Neighbour)
+	{
+		if (n == nullptr || n->InClosed)
+		{
+			continue;
+		}
+
+		n->g = current->g +1;
+		n->f = n->EstimatedF();
+		
+		if (n->f < lowestF)
+		{
+			lowestF = n->f;
+			lowestTile = n;
+		}
+	}
+
+	return lowestTile;
+}
+
 void DungeonGame::PlayerMove(Direction dir)
 {
 	int posX = this->Hero->PosX;
@@ -293,6 +341,9 @@ void DungeonGame::PlayerMove(Direction dir)
 		// If the target tile is walkable move the Hero
 		this->Hero->SetCurrentPos(newX, newY, tileSizeX);
 		this->Hero->CurrentTile = &Tiles[newX][newY];
+		this->Hero->PosX = newX;
+		this->Hero->PosY = newY;
+		SetHeuristic();
 	}
 }
 
@@ -355,8 +406,11 @@ void DungeonGame::GetTiles()
 	BossTile = &Tiles[this->Boss->PosX][this->Boss->PosY];
 }
 
+
+
 void DungeonGame::Update(double)
 {
+	SetHeuristic();
 	// Waits to try to move enemy
 	static int movementCooldown = 0;
 
@@ -380,7 +434,7 @@ void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
 	LoadTextures(renderer);
 	SetPlayerPos();
 	LoadBoss(renderer);
-
+	SetHeuristic();
 	
 }
 
@@ -400,10 +454,7 @@ void DungeonGame::StartGame(SDL_Renderer* renderer)
 	EnemyCheck();
 }
 
-int DungeonGame::ManhattanDistance(int x1, int y1, int x2, int y2)
-{
-	return std::abs(x1 - x2) + std::abs(y1 - y2);
-}
+
 
 void DungeonGame::test()
 {
@@ -414,10 +465,15 @@ void DungeonGame::test()
 	std::cout << posx << posy << std::endl;
 	Tile& tile = Tiles[posx][posy];
 	int randomDir = RandomDir();
+
 	
-	std::cout << "Manhattan Distance: " << ManhattanDistance(this->Hero->PosX, this->Hero->PosY, this->Boss->PosX, this->Boss->PosY) << std::endl;
+	
+	
+	//std::cout << "Manhattan Distance: " << ManhattanDistance(this->Hero->PosX, this->Hero->PosY, this->Boss->PosX, this->Boss->PosY) << std::endl;
 	//std::cout << BossTile().X << BossTile().Y << std::endl;
 }
+
+
 
 
 
@@ -429,6 +485,7 @@ void DungeonGame::Pathfinding()
 	StartingTile = BossTile;
 	StartingTile->f = 0;
 	OpenList.push_front(StartingTile);
+	StartingTile->InOpen = true;
 
 	
 }

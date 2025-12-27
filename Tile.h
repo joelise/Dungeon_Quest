@@ -23,5 +23,9 @@ public:
 	int g;
 	int h;
 	int f;
+	bool InClosed;
+	bool InOpen;
+
+	int EstimatedF();
 };
 

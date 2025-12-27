@@ -71,8 +71,9 @@ public:
 	void GetTiles();
 	void StartGame(SDL_Renderer* renderer);
 	void test();
-
+	void SetHeuristic();
 	int ManhattanDistance(int x1, int y1, int x2, int y2);
+	Tile* LowestNeighbour(Tile* current);
 	void Pathfinding();
 
 	// Pathfinding A3

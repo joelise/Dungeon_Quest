@@ -43,3 +43,8 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture
 	//this->Rect = rect;
 }
 
+int Tile::EstimatedF()
+{
+	return g + h;
+}
+
