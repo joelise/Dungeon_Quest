@@ -10,6 +10,8 @@
 #include "Enums.h"
 #include "MoveResult.h"
 #include <iostream>
+#include <list>
+#include <cmath>
 
 
 // Texture Paths
@@ -66,9 +68,20 @@ public:
 	void EnemyMove(Direction dir);
 	void Update(double);
 	void LoadBossRoom(SDL_Renderer* renderer);
+	void GetTiles();
 	void StartGame(SDL_Renderer* renderer);
 	void test();
 
+	int ManhattanDistance(int x1, int y1, int x2, int y2);
+	void Pathfinding();
+
+	// Pathfinding A3
+	Tile* HeroTile;
+	Tile* BossTile;
+	Tile* StartingTile;
+	//Tile BossTile();
+	
+	
 
 	// ATTEMPTED FUNCTIONS
 

@@ -46,7 +46,7 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 void DungeonGame::LoadBoss(SDL_Renderer* renderer)
 {
 	
-	this->Boss->CurrentPos(0, 0, tileSizeX);
+	this->Boss->CurrentPos(9, 5, tileSizeX);
 	std::cout << "Boss loaded" << std::endl;
 }
 
@@ -339,6 +339,22 @@ void DungeonGame::EnemyMove(Direction dir)
 	}
 }
 
+/*Tile DungeonGame::BossTile()
+{
+	int posX= this->Boss->PosX;
+	int posY = this->Boss->PosY;
+
+	Tiles[posX][posY].X = posX;
+	Tiles[posX][posY].Y = posY;
+	return Tiles[posX][posY];
+}*/
+
+void DungeonGame::GetTiles()
+{
+	HeroTile = &Tiles[this->Hero->PosX][this->Hero->PosY];
+	BossTile = &Tiles[this->Boss->PosX][this->Boss->PosY];
+}
+
 void DungeonGame::Update(double)
 {
 	// Waits to try to move enemy
@@ -364,7 +380,11 @@ void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
 	LoadTextures(renderer);
 	SetPlayerPos();
 	LoadBoss(renderer);
+
+	
 }
+
+
 
 
 void DungeonGame::StartGame(SDL_Renderer* renderer)
@@ -380,6 +400,11 @@ void DungeonGame::StartGame(SDL_Renderer* renderer)
 	EnemyCheck();
 }
 
+int DungeonGame::ManhattanDistance(int x1, int y1, int x2, int y2)
+{
+	return std::abs(x1 - x2) + std::abs(y1 - y2);
+}
+
 void DungeonGame::test()
 {
 	// Testing function
@@ -390,7 +415,25 @@ void DungeonGame::test()
 	Tile& tile = Tiles[posx][posy];
 	int randomDir = RandomDir();
 	
+	std::cout << "Manhattan Distance: " << ManhattanDistance(this->Hero->PosX, this->Hero->PosY, this->Boss->PosX, this->Boss->PosY) << std::endl;
+	//std::cout << BossTile().X << BossTile().Y << std::endl;
 }
+
+
+
+void DungeonGame::Pathfinding()
+{
+	std::list<Tile*> OpenList;
+	std::list<Tile*> ClosedList;
+
+	StartingTile = BossTile;
+	StartingTile->f = 0;
+	OpenList.push_front(StartingTile);
+
+	
+}
+
+
 
 // ATTEMPTED FUNCTIONS AND CODE (code that was tried but didn't quite work or was changed)
 

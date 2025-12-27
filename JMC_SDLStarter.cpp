@@ -59,7 +59,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 
     //Game->StartGame(renderer);
     Game->LoadBossRoom(renderer);
-
+    Game->test();
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 

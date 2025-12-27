@@ -18,7 +18,10 @@ public:
 	Tile* EastNeightbour;
 	Tile* SouthNeighbour;
 	Tile* WestNeighbour;
-	
-	
+
+	// PathFinding A3
+	int g;
+	int h;
+	int f;
 };
 
