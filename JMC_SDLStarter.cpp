@@ -58,6 +58,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
     }
 
     //Game->StartGame(renderer);
+    //Game->LoadRoom(Room);
     Game->LoadBossRoom(renderer);
     Game->test();
     return SDL_APP_CONTINUE;  /* carry on with the program! */
@@ -89,6 +90,11 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         {
             Game->PlayerMove(East);
             Game->test();
+        }
+
+        if (event->key.scancode == SDL_SCANCODE_P)
+        {
+            Game->FindPath();
         }
 
     }

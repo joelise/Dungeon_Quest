@@ -380,6 +380,29 @@ void DungeonGame::RemoveFromOpen(std::vector<Tile*>& openList, Tile* tile)
 	tile->InOpen = false;
 }
 
+std::vector<Tile*> DungeonGame::BuildPath(Tile* startTile, Tile* targetTile)
+{
+	std::vector<Tile*> path;
+
+	Tile* currentTile = targetTile;
+	
+	while (currentTile != nullptr)
+	{
+		path.push_back(currentTile);
+		currentTile = currentTile->Parent;
+	}
+	
+	std::reverse(path.begin(), path.end());
+
+	for (Tile* t : path)
+	{
+
+		std::cout << "Tile: [" << t->X << "][" << t->Y << "]" << std::endl;
+	}
+
+	return path;
+}
+
 
 
 void DungeonGame::PlayerMove(Direction dir)
@@ -562,6 +585,8 @@ void DungeonGame::FindPath()
 		if (currentTile == targetTile)
 		{
 			std::cout << "Hero Found\n";
+			BuildPath(startTile, targetTile);
+
 			break;
 		}
 
@@ -575,6 +600,7 @@ void DungeonGame::FindPath()
 
 void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
 {
+	
 	const char* bossRoom = BossRoom[0];
 
 	LoadRoom(bossRoom);
@@ -604,7 +630,7 @@ void DungeonGame::Update(double)
 	
 	EnemyMove(dir);						// Trys to move enemy
 	//Pathfinding();
-	FindPath();
+	//FindPath();
 }
 
 

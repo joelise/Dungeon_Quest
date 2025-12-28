@@ -80,6 +80,7 @@ public:
 	Tile* FindLowestF(std::vector<Tile*>& openList);
 	Tile* LowestNeighbour(Tile* current);
 	void RemoveFromOpen(std::vector<Tile*>& openList, Tile* tile);
+	std::vector<Tile*> BuildPath(Tile* startTile, Tile* targetTile);
 	void FindPath();
 	void Pathfinding();
 
@@ -87,6 +88,7 @@ public:
 	Tile* HeroTile;
 	Tile* BossTile;
 	Tile* StartingTile;
+	
 	//Tile BossTile();
 	
 	
