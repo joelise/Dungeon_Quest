@@ -516,6 +516,8 @@ void DungeonGame::GetTiles()
 	BossTile = &Tiles[this->Boss->PosX][this->Boss->PosY];
 }
 
+
+
 void DungeonGame::Pathfinding()
 {
 	GetTiles();
@@ -586,7 +588,9 @@ void DungeonGame::FindPath()
 		{
 			std::cout << "Hero Found\n";
 			BuildPath(startTile, targetTile);
-
+			std::vector<Tile*> bossPath = BuildPath(startTile, targetTile);
+			
+			//this->Boss->CurrentPath = BuildPath(startTile, targetTile);
 			break;
 		}
 
@@ -596,6 +600,28 @@ void DungeonGame::FindPath()
 
 		CheckNeighbourTile(currentTile, targetTile, openList);
 	}
+}
+
+void DungeonGame::MoveBoss()
+{
+	int posX = this->Boss->PosX;
+	int posY = this->Boss->PosY;
+	this->Boss->CurrentTile = &Tiles[posX][posY];
+	std::vector<Tile*> bossPath = this->Boss->CurrentPath;
+	int pathIndex = this->Boss->PathIndex;
+
+	if (bossPath.empty() || pathIndex > sizeof(bossPath.size() - 1))
+	{
+		return;
+	}
+
+	pathIndex++;
+	Tile* nextTile = bossPath[pathIndex];
+	this->Boss->CurrentTile = nextTile;
+	int newX = this->Boss->CurrentTile->X;
+	int newY = this->Boss->CurrentTile->Y;
+	this->Boss->CurrentPos(newX, newY, tileSizeX);
+	this->Boss->CurrentTile = &Tiles[newX][newY];
 }
 
 void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
@@ -611,24 +637,29 @@ void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
 	ResetTiles();
 	GetTiles();
 	SetHeuristic();
+	FindPath();
 
 }
 
 void DungeonGame::Update(double)
 {
 	SetHeuristic();
+	
 	// Waits to try to move enemy
 	static int movementCooldown = 0;
 
+	
 	if (movementCooldown > 0)
 	{
 		movementCooldown--;
 		return;
 	}
 	movementCooldown = 1500;
+	MoveBoss();
 	Direction dir = RandomDir();		// Gets a random direction to move enemy
 	
 	EnemyMove(dir);						// Trys to move enemy
+	
 	//Pathfinding();
 	//FindPath();
 }
@@ -674,6 +705,8 @@ void DungeonGame::test()
 	{
 		std::cout << "Not Null";
 	}
+
+	
 	//std::cout << "Manhattan Distance: " << ManhattanDistance(this->Hero->PosX, this->Hero->PosY, this->Boss->PosX, this->Boss->PosY) << std::endl;
 	//std::cout << BossTile().X << BossTile().Y << std::endl;
 }

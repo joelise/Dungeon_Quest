@@ -71,6 +71,7 @@ public:
 	void Update(double);
 	void LoadBossRoom(SDL_Renderer* renderer);
 	void GetTiles();
+	void MoveBoss();
 	void StartGame(SDL_Renderer* renderer);
 	void test();
 	void SetHeuristic();
