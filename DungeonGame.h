@@ -12,6 +12,8 @@
 #include <iostream>
 #include <list>
 #include <cmath>
+#include <vector>
+#include <algorithm>
 
 
 // Texture Paths
@@ -73,7 +75,12 @@ public:
 	void test();
 	void SetHeuristic();
 	int ManhattanDistance(int x1, int y1, int x2, int y2);
+	void ResetTiles();
+	void CheckNeighbourTile(Tile* current, Tile* target, std::vector<Tile*>& openList);
+	Tile* FindLowestF(std::vector<Tile*>& openList);
 	Tile* LowestNeighbour(Tile* current);
+	void RemoveFromOpen(std::vector<Tile*>& openList, Tile* tile);
+	void FindPath();
 	void Pathfinding();
 
 	// Pathfinding A3

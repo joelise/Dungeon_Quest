@@ -45,8 +45,10 @@ void DungeonGame::LoadTextures(SDL_Renderer* renderer)
 
 void DungeonGame::LoadBoss(SDL_Renderer* renderer)
 {
-	
-	this->Boss->CurrentPos(9, 5, tileSizeX);
+	int bossSpawnX = 8;
+	int bossSpawnY = 5;
+	this->Boss->CurrentPos(bossSpawnX, bossSpawnY, tileSizeX);
+	this->Boss->CurrentTile = &Tiles[bossSpawnX][bossSpawnY];
 	std::cout << "Boss loaded" << std::endl;
 }
 
@@ -87,6 +89,8 @@ void DungeonGame::SetNeighbour()
 		for (int y = 0; y < RoomSize; y++)
 		{
 			Tile* tile = &Tiles[x][y];
+			tile->X = x;
+			tile->Y = y;
 			
 			// (condition) ? true : false
 			
@@ -94,7 +98,7 @@ void DungeonGame::SetNeighbour()
 			(y == 0) ? tile->NorthNeighbour = nullptr : tile->NorthNeighbour = &Tiles[x][y - 1];	
 			
 			// Sets East Tile Neighbour, if current x == roomsize - 1, player is a the right side of the grid - there is no east tile
-			(x == RoomSize - 1) ? tile->EastNeightbour = nullptr : tile->EastNeightbour = &Tiles[x + 1][y];
+			(x == RoomSize - 1) ? tile->EastNeighbour = nullptr : tile->EastNeighbour = &Tiles[x + 1][y];
 
 			// Sets South Tile Neighbour, if y == roomsize - 1, player is at the bottom of the grid - there is no south tile
 			(y == RoomSize - 1) ? tile->SouthNeighbour = nullptr : tile->SouthNeighbour = &Tiles[x][y + 1];
@@ -112,7 +116,12 @@ void DungeonGame::LoadRoom(const char* file)
 		for (int y = 0; y < RoomSize; y++)
 		{
 			this->Tiles[x][y] = Tile();		// Resets tiles when loading new room
+			this->Tiles[x][y].X = x;
+			this->Tiles[x][y].Y = y;
+
+
 			SetNeighbour();					// Sets new tile values
+			
 		}
 	}
 
@@ -252,6 +261,19 @@ int DungeonGame::ManhattanDistance(int x1, int y1, int x2, int y2)
 	return std::abs(x1 - x2) + std::abs(y1 - y2);
 }
 
+void DungeonGame::ResetTiles()
+{
+	for (int x = 0; x < RoomSize; x++)
+	{
+		for (int y = 0; y < RoomSize; y++)
+		{
+			Tiles[x][y].ResetTile();
+		}
+	}
+}
+
+
+
 
 
 void DungeonGame::SetHeuristic()
@@ -263,15 +285,65 @@ void DungeonGame::SetHeuristic()
 	{
 		for (int y = 0; y < RoomSize; y++)
 		{
+			//Tiles[x][y].X = x;
+			//Tiles[x][y].Y = y;
+			//Tiles[x][y].g = 0;
 			Tiles[x][y].h = ManhattanDistance(x, y, targetX, targetY);
+			Tiles[x][y].f = Tiles[x][y].EstimatedF();
+			//Tiles[x][y].InClosed = false;
+			//Tiles[x][y].InOpen = false;
+			//Tiles[x][y].Parent = nullptr;
 			
 		}
 	}
 }
 
+void DungeonGame::CheckNeighbourTile(Tile* current, Tile* target, std::vector<Tile*>& openList)
+{
+	Tile* Neighbours[] = { current->NorthNeighbour, current->EastNeighbour, current->SouthNeighbour, current->WestNeighbour };
+	//Tile* n = Neighbours[0];
+	for (Tile* n : Neighbours)
+	{
+		if (n == nullptr || !n->Walkable || n->InClosed)
+		{
+			continue;
+		}
+
+		int newG = current->g + 1;
+
+		if (!n->InOpen || newG < n->g)
+		{
+			n->g = newG;
+			n->h = ManhattanDistance(current->X, current->Y, target->X, target->Y);
+			n->f = n->EstimatedF();
+			n->Parent = current;
+		}
+
+		if (!n->InOpen)
+		{
+			openList.push_back(n);
+			n->InOpen = true;
+		}
+	}
+}
+
+Tile* DungeonGame::FindLowestF(std::vector<Tile*>& openList)
+{
+	Tile* lowestTile = openList[0];
+
+	for (Tile* t : openList)
+	{
+		if (t->f < lowestTile->f)
+		{
+			lowestTile = t;
+		}
+	}
+	return lowestTile;
+}
+
 Tile* DungeonGame::LowestNeighbour(Tile* current)
 {
-	Tile* Neighbour[] = { current->NorthNeighbour, current->EastNeightbour, current->SouthNeighbour, current->WestNeighbour };
+	Tile* Neighbour[] = { current->NorthNeighbour, current->EastNeighbour, current->SouthNeighbour, current->WestNeighbour };
 	Tile* lowestTile = nullptr;
 	int lowestF = INT_MAX;
 
@@ -282,8 +354,15 @@ Tile* DungeonGame::LowestNeighbour(Tile* current)
 			continue;
 		}
 
-		n->g = current->g +1;
-		n->f = n->EstimatedF();
+		int newG = current->g + 1;
+
+		if (!n->InOpen || newG < n->g)
+		{
+			n->g = newG;
+			n->f = n->EstimatedF();
+			n->InOpen = true;
+
+		}
 		
 		if (n->f < lowestF)
 		{
@@ -294,6 +373,14 @@ Tile* DungeonGame::LowestNeighbour(Tile* current)
 
 	return lowestTile;
 }
+
+void DungeonGame::RemoveFromOpen(std::vector<Tile*>& openList, Tile* tile)
+{
+	openList.erase(std::remove(openList.begin(), openList.end(), tile), openList.end());
+	tile->InOpen = false;
+}
+
+
 
 void DungeonGame::PlayerMove(Direction dir)
 {
@@ -324,7 +411,7 @@ void DungeonGame::PlayerMove(Direction dir)
 	switch (dir)
 	{
 	case North: target = current->NorthNeighbour; break;
-	case East: target = current->EastNeightbour; break;
+	case East: target = current->EastNeighbour; break;
 	case South: target = current->SouthNeighbour; break;
 	case West: target = current->WestNeighbour; break;
 	}
@@ -375,7 +462,7 @@ void DungeonGame::EnemyMove(Direction dir)
 	switch (dir)
 	{
 	case North: target = current->NorthNeighbour; break;
-	case East: target = current->EastNeightbour; break;
+	case East: target = current->EastNeighbour; break;
 	case South: target = current->SouthNeighbour; break;
 	case West: target = current->WestNeighbour; break;
 	}
@@ -406,7 +493,100 @@ void DungeonGame::GetTiles()
 	BossTile = &Tiles[this->Boss->PosX][this->Boss->PosY];
 }
 
+void DungeonGame::Pathfinding()
+{
+	GetTiles();
+	SetHeuristic();
+	std::vector<Tile*> OpenList;
+	std::vector<Tile*> ClosedList;
 
+	Tile* startTile = BossTile;
+	Tile* targetTile = HeroTile;
+	Tile* currentTile;
+	Tile* nextTile;
+	Tile* previousTile;
+
+	startTile->g = 0;
+	startTile->h = ManhattanDistance(startTile->X, startTile->Y, targetTile->X, targetTile->Y);
+	startTile->f = startTile->EstimatedF();
+	OpenList.push_back(startTile);
+	startTile->InOpen = true;
+	currentTile = startTile;
+	while (!OpenList.empty())
+	{
+		nextTile = LowestNeighbour(currentTile);
+		RemoveFromOpen(OpenList, currentTile);
+		ClosedList.push_back(currentTile);
+		previousTile = currentTile;
+		currentTile = nextTile;
+
+		previousTile->InClosed = true;
+
+		if (currentTile == targetTile)
+		{
+			std::cout << "Hero Found\n";
+			break;
+		}
+
+		if (currentTile->InOpen)
+		{
+			//OpenList.push_back(currentTile);
+		}
+	}
+
+
+}
+
+void DungeonGame::FindPath()
+{
+	ResetTiles();
+	GetTiles();
+	SetHeuristic();
+	SetNeighbour();
+
+	std::vector<Tile*> openList;
+	std::vector<Tile*> closedList;
+
+	Tile* startTile = BossTile;
+	Tile* targetTile = HeroTile;
+	Tile* currentTile = nullptr;
+
+	startTile->g = 0;
+	openList.push_back(startTile);
+	startTile->InOpen = true;
+
+	while (!openList.empty())
+	{
+		currentTile = FindLowestF(openList);
+		
+		if (currentTile == targetTile)
+		{
+			std::cout << "Hero Found\n";
+			break;
+		}
+
+		RemoveFromOpen(openList, currentTile);
+		closedList.push_back(currentTile);
+		currentTile->InClosed = true;
+
+		CheckNeighbourTile(currentTile, targetTile, openList);
+	}
+}
+
+void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
+{
+	const char* bossRoom = BossRoom[0];
+
+	LoadRoom(bossRoom);
+	SetNeighbour();
+	LoadTextures(renderer);
+	SetPlayerPos();
+	LoadBoss(renderer);
+	ResetTiles();
+	GetTiles();
+	SetHeuristic();
+
+}
 
 void DungeonGame::Update(double)
 {
@@ -423,20 +603,11 @@ void DungeonGame::Update(double)
 	Direction dir = RandomDir();		// Gets a random direction to move enemy
 	
 	EnemyMove(dir);						// Trys to move enemy
+	//Pathfinding();
+	FindPath();
 }
 
-void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
-{
-	const char* bossRoom = BossRoom[0];
 
-	LoadRoom(bossRoom);
-	SetNeighbour();
-	LoadTextures(renderer);
-	SetPlayerPos();
-	LoadBoss(renderer);
-	SetHeuristic();
-	
-}
 
 
 
@@ -458,6 +629,7 @@ void DungeonGame::StartGame(SDL_Renderer* renderer)
 
 void DungeonGame::test()
 {
+	GetTiles();
 	// Testing function
 	int posx = this->Hero->PosX;
 	int posy = this->Hero->PosY;
@@ -466,9 +638,16 @@ void DungeonGame::test()
 	Tile& tile = Tiles[posx][posy];
 	int randomDir = RandomDir();
 
+	std::cout << "BossTile Pos X: " << BossTile->X;
 	
-	
-	
+	if (BossTile->EastNeighbour == nullptr)
+	{
+		std::cout << "NULL";
+	}
+	else
+	{
+		std::cout << "Not Null";
+	}
 	//std::cout << "Manhattan Distance: " << ManhattanDistance(this->Hero->PosX, this->Hero->PosY, this->Boss->PosX, this->Boss->PosY) << std::endl;
 	//std::cout << BossTile().X << BossTile().Y << std::endl;
 }
@@ -477,18 +656,7 @@ void DungeonGame::test()
 
 
 
-void DungeonGame::Pathfinding()
-{
-	std::list<Tile*> OpenList;
-	std::list<Tile*> ClosedList;
 
-	StartingTile = BossTile;
-	StartingTile->f = 0;
-	OpenList.push_front(StartingTile);
-	StartingTile->InOpen = true;
-
-	
-}
 
 
 

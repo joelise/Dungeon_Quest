@@ -12,9 +12,13 @@ Tile::Tile()
 
 	texture = nullptr;
 	NorthNeighbour = nullptr;
-	EastNeightbour = nullptr;
+	EastNeighbour = nullptr;
 	SouthNeighbour = nullptr;
 	WestNeighbour = nullptr;
+
+	InClosed = false;
+	InOpen = false;
+	Parent = nullptr;
 }
 
 
@@ -41,6 +45,15 @@ void Tile::Configure(SDL_Color& color, float x, float y, float size, SDL_Texture
 	
 
 	//this->Rect = rect;
+}
+
+void Tile::ResetTile()
+{
+	g = INT_MAX;
+	f = INT_MAX;
+	InOpen = false;
+	InClosed = false;
+	Parent = nullptr;
 }
 
 int Tile::EstimatedF()

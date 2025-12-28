@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDl.h>
 #include "Enums.h"
+#include <climits>
 
 class Tile
 {
@@ -15,11 +16,13 @@ public:
 	SDL_FRect Rect;
 	void Configure(SDL_Color& color, float x, float y, float size, SDL_Texture* textures[]);
 	Tile* NorthNeighbour;
-	Tile* EastNeightbour;
+	Tile* EastNeighbour;
 	Tile* SouthNeighbour;
 	Tile* WestNeighbour;
-
+	
 	// PathFinding A3
+	void ResetTile();
+	Tile* Parent;
 	int g;
 	int h;
 	int f;
