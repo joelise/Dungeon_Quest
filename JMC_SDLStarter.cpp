@@ -26,7 +26,7 @@ static SDL_Renderer* renderer = NULL;
 static SDL_Texture* texture = NULL;
 
 static const char* ProjectName = "JMC Starter Project";
-const static char* Room = { "Data/Rooms/Room04.bmp" };
+const static char* Room = { "Data/Rooms/Room03.bmp" };
 static DungeonGame* Game;
 
 
@@ -57,9 +57,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         cout << "Null";
     }
 
-    //Game->StartGame(renderer);
+    Game->StartGame(renderer);
     //Game->LoadRoom(Room);
-    Game->LoadBossRoom(renderer);
+    //Game->LoadBossRoom(renderer);
     Game->test();
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }

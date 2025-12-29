@@ -52,7 +52,7 @@ public:
 	DungeonGame(float tileSizeX, float tileSizeY);
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
-	void LoadBoss(SDL_Renderer* renderer);
+	//void LoadBoss(SDL_Renderer* renderer);
 	int RandomRoomNum();
 	Direction RandomDir();
 	void RandomizeDungeon();
@@ -63,6 +63,8 @@ public:
 	bool FirstWalkable(int& posX, int& posY);
 	void SetPlayerPos();
 	void SetEnemyPos();
+	void SetBossPos();
+	void SetStartPos();
 	void EnemyCheck();
 	void UpdateRoom(Direction dir);
 	void LoadRoom(Direction dir);

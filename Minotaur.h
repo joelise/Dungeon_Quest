@@ -7,7 +7,7 @@ class Minotaur
 public:
 	Minotaur();
 	~Minotaur();
-	void CurrentPos(float x, float y, float tileSize);
+	void SetCurrentPos(float x, float y, float tileSize);
 	SDL_Texture* Texture;
 	SDL_FRect Rect;
 	int PosX;

@@ -9,7 +9,7 @@ Minotaur::~Minotaur()
 {
 }
 
-void Minotaur::CurrentPos(float x, float y, float tileSize)
+void Minotaur::SetCurrentPos(float x, float y, float tileSize)
 {
 	PosX = x;
 	PosY = y;
