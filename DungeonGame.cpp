@@ -405,57 +405,7 @@ std::vector<Tile*> DungeonGame::BuildPath(Tile* startTile, Tile* targetTile)
 
 
 
-void DungeonGame::PlayerMove(Direction dir)
-{
-	int posX = this->Hero->PosX;
-	int posY = this->Hero->PosY;
-	this->Hero->CurrentTile = &Tiles[posX][posY];
-	
-	int dirX = 0;
-	int dirY = 0;
 
-	// Updates tile grid position based off direction
-	switch (dir)
-	{
-	case North: dirY = -1; break;
-	case East: dirX = 1; break;
-	case South: dirY = 1; break;
-	case West: dirX = -1; break;
-	}
-
-	// New Position = current pos and direction their moving
-	int newX = this->Hero->PosX + dirX;
-	int newY = this->Hero->PosY + dirY;
-
-	Tile* target = nullptr;							// Tile Hero is moving to
-	Tile* current = this->Hero->CurrentTile;		// Current Tile
-
-	// Gets the neighbour of the current tile
-	switch (dir)
-	{
-	case North: target = current->NorthNeighbour; break;
-	case East: target = current->EastNeighbour; break;
-	case South: target = current->SouthNeighbour; break;
-	case West: target = current->WestNeighbour; break;
-	}
-
-	if (target == nullptr)
-	{
-		// If there is no tile hero is at edge of room, load the new room
-		LoadRoom(dir);		// Loads room based of movement direction
-		return;
-	}
-
-	if (target->Walkable)
-	{
-		// If the target tile is walkable move the Hero
-		this->Hero->SetCurrentPos(newX, newY, tileSizeX);
-		this->Hero->CurrentTile = &Tiles[newX][newY];
-		this->Hero->PosX = newX;
-		this->Hero->PosY = newY;
-		SetHeuristic();
-	}
-}
 
 void DungeonGame::EnemyMove(Direction dir)
 {
@@ -572,6 +522,7 @@ void DungeonGame::FindPath()
 	std::vector<Tile*> openList;
 	std::vector<Tile*> closedList;
 
+	BossIndex = 0;
 	Tile* startTile = BossTile;
 	Tile* targetTile = HeroTile;
 	Tile* currentTile = nullptr;
@@ -587,8 +538,9 @@ void DungeonGame::FindPath()
 		if (currentTile == targetTile)
 		{
 			std::cout << "Hero Found\n";
+			
 			BuildPath(startTile, targetTile);
-			std::vector<Tile*> bossPath = BuildPath(startTile, targetTile);
+			BossPath = BuildPath(startTile, targetTile);
 			
 			//this->Boss->CurrentPath = BuildPath(startTile, targetTile);
 			break;
@@ -602,7 +554,60 @@ void DungeonGame::FindPath()
 	}
 }
 
-void DungeonGame::MoveBoss()
+void DungeonGame::PlayerMove(Direction dir)
+{
+	int posX = this->Hero->PosX;
+	int posY = this->Hero->PosY;
+	this->Hero->CurrentTile = &Tiles[posX][posY];
+
+	int dirX = 0;
+	int dirY = 0;
+
+	// Updates tile grid position based off direction
+	switch (dir)
+	{
+	case North: dirY = -1; break;
+	case East: dirX = 1; break;
+	case South: dirY = 1; break;
+	case West: dirX = -1; break;
+	}
+
+	// New Position = current pos and direction their moving
+	int newX = this->Hero->PosX + dirX;
+	int newY = this->Hero->PosY + dirY;
+
+	Tile* target = nullptr;							// Tile Hero is moving to
+	Tile* current = this->Hero->CurrentTile;		// Current Tile
+
+	// Gets the neighbour of the current tile
+	switch (dir)
+	{
+	case North: target = current->NorthNeighbour; break;
+	case East: target = current->EastNeighbour; break;
+	case South: target = current->SouthNeighbour; break;
+	case West: target = current->WestNeighbour; break;
+	}
+
+	if (target == nullptr)
+	{
+		// If there is no tile hero is at edge of room, load the new room
+		LoadRoom(dir);		// Loads room based of movement direction
+		return;
+	}
+
+	if (target->Walkable)
+	{
+		// If the target tile is walkable move the Hero
+		this->Hero->SetCurrentPos(newX, newY, tileSizeX);
+		this->Hero->CurrentTile = &Tiles[newX][newY];
+		this->Hero->PosX = newX;
+		this->Hero->PosY = newY;
+		SetHeuristic();
+		FindPath();
+	}
+}
+
+/*void DungeonGame::MoveBoss()
 {
 	int posX = this->Boss->PosX;
 	int posY = this->Boss->PosY;
@@ -622,13 +627,35 @@ void DungeonGame::MoveBoss()
 	int newY = this->Boss->CurrentTile->Y;
 	this->Boss->CurrentPos(newX, newY, tileSizeX);
 	this->Boss->CurrentTile = &Tiles[newX][newY];
+}*/
+
+void DungeonGame::MoveBoss()
+{
+	size_t length = BossPath.size();
+	Tile* nextTile = nullptr;
+	//std::cout << "Length: " << length;
+	if (BossPath.empty() || BossIndex >= length)
+	{
+		//std::cout << "reached\n";
+		return;
+	}
+
+	//BossIndex++;
+	nextTile = BossPath[BossIndex];
+
+	this->Boss->CurrentTile = nextTile;
+	this->Boss->CurrentPos(nextTile->X, nextTile->Y, tileSizeX);
+	this->Boss->CurrentTile = &Tiles[nextTile->X][nextTile->Y];
+
+	//std::cout << nextTile->X << " " << nextTile->Y;
+	
 }
 
 void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
 {
 	
 	const char* bossRoom = BossRoom[0];
-
+	//BossIndex = 0;
 	LoadRoom(bossRoom);
 	SetNeighbour();
 	LoadTextures(renderer);
@@ -643,7 +670,7 @@ void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)
 
 void DungeonGame::Update(double)
 {
-	SetHeuristic();
+	//SetHeuristic();
 	
 	// Waits to try to move enemy
 	static int movementCooldown = 0;
@@ -655,11 +682,13 @@ void DungeonGame::Update(double)
 		return;
 	}
 	movementCooldown = 1500;
+	BossIndex++;
 	MoveBoss();
 	Direction dir = RandomDir();		// Gets a random direction to move enemy
 	
 	EnemyMove(dir);						// Trys to move enemy
-	
+	//std::cout << movementCooldown;
+	//std::cout << BossIndex;
 	//Pathfinding();
 	//FindPath();
 }

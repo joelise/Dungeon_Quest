@@ -89,7 +89,11 @@ public:
 	Tile* HeroTile;
 	Tile* BossTile;
 	Tile* StartingTile;
-	
+	int BossIndex;
+	std::vector<Tile*> BossPath;
+	Tile* startTile;
+	Tile* targetTile;
+	Tile* currentTile;
 	//Tile BossTile();
 	
 	
