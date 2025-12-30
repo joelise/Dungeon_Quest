@@ -617,8 +617,8 @@ void DungeonGame::EnemyMove(Direction dir)
 
 
 
-/* ATTEMPTED FUNCTIONS AND CODE(code that was tried but didn't quite work or was changed)
-
+// ATTEMPTED FUNCTIONS AND CODE(code that was tried but didn't quite work or was changed)
+/*
 ---- ASSESSMENT THREE CODE ---- (attempted code or code that was replaced/changed)
 
 void DungeonGame::LoadBossRoom(SDL_Renderer* renderer)

@@ -22,10 +22,10 @@ public:
 	
 	// PathFinding A3
 	void ResetTile();
-	Tile* Parent;
-	int g;
-	int h;
-	int f;
+	Tile* Parent;	// Previous tile pointer
+	int g;			// cost from start to current
+	int h;			// estimated cost from current to target
+	int f;			// estimated total cost from start to target
 	bool InClosed;
 	bool InOpen;
 

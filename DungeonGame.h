@@ -52,7 +52,7 @@ public:
 	DungeonGame(float tileSizeX, float tileSizeY);
 	~DungeonGame();
 	void LoadTextures(SDL_Renderer* renderer);
-	//void LoadBoss(SDL_Renderer* renderer);
+	
 	int RandomRoomNum();
 	Direction RandomDir();
 	void RandomizeDungeon();
@@ -61,8 +61,6 @@ public:
 	void LoadRoom(const char* file);
 	void LoadRoom(int x, int y);
 	bool FirstWalkable(int& posX, int& posY);
-	void SetPlayerPos();
-	void SetEnemyPos();
 	void SetBossPos();
 	void SetStartPos();
 	void EnemyCheck();
@@ -71,7 +69,6 @@ public:
 	void PlayerMove(Direction dir);
 	void EnemyMove(Direction dir);
 	void Update(double);
-	void LoadBossRoom(SDL_Renderer* renderer);
 	void GetTiles();
 	void MoveBoss();
 	void StartGame(SDL_Renderer* renderer);
@@ -81,11 +78,10 @@ public:
 	void ResetTiles();
 	void CheckNeighbourTile(Tile* current, Tile* target, std::vector<Tile*>& openList);
 	Tile* FindLowestF(std::vector<Tile*>& openList);
-	Tile* LowestNeighbour(Tile* current);
 	void RemoveFromOpen(std::vector<Tile*>& openList, Tile* tile);
 	std::vector<Tile*> BuildPath(Tile* startTile, Tile* targetTile);
 	void FindPath();
-	void Pathfinding();
+	
 
 	// Pathfinding A3
 	Tile* HeroTile;
@@ -96,7 +92,7 @@ public:
 	Tile* startTile;
 	Tile* targetTile;
 	Tile* currentTile;
-	//Tile BossTile();
+	
 	
 	
 
@@ -122,6 +118,13 @@ public:
 	//MoveResult* MoveResult;
 	//void TryMove(int x, int y, GameCharacter* character, Tile* n, Direction dir);
 	//MoveResult* TryMove(int currentX, int currentY, Direction dir);
+	//void LoadBoss(SDL_Renderer* renderer);
+	//void SetPlayerPos();
+	//void SetEnemyPos();
+	//void LoadBossRoom(SDL_Renderer* renderer);
+	//Tile* LowestNeighbour(Tile* current);
+	//Tile BossTile();
+	//void Pathfinding();
 
 private:
 	float tileSizeX;
